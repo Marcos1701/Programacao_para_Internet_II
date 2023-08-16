@@ -98,4 +98,20 @@ footer a {
 footer a:hover {
     color: aqua;
     text-decoration: underline;
+    cursor: pointer;
+}
+
+
+.block:hover #hello-world {
+    display: none;
+}
+
+#ola-mundo {
+    color: rgb(241, 241, 241);
+    cursor: pointer;
+    display: none;
+}
+
+.block:hover #ola-mundo {
+    display: block;
 }
