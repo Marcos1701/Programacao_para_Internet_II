@@ -1,0 +1,26 @@
+{{#> base}}
+
+{{#*inline "title"}}Hello Word!!{{/inline}}
+
+{{#*inline "headContent"}}
+<link rel="stylesheet" href="css/styles.css">
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+{{/inline}}
+
+
+{{#*inline "mainContent"}}
+<div class="block">
+    {{#if messages}}
+    {{#each messages}}
+    <h1 id="{{this.id}}" title="{{this.title}}">{{this.message}}</h1>
+    {{/each}}
+    {{/if}}
+</div>
+{{/inline}}
+
+{{!-- {{#*inline "footerContent"}}
+<p>Created by:</p>
+<a id="criador" href="https://github.com/Marcos1701" title="acessar github">Marcos N. Santos</a>
+{{/inline}} --}}
+
+{{/base}}

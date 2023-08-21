@@ -1,37 +1,23 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{{#> base}}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+{{#*inline "title"}}{{title}}{{/inline}}
 
-    <link rel="stylesheet" href="css/styles.css">
-    <title>Hello Word!!</title>
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+{{#*inline "headerContent"}}
+<h1>{{header}}</h1>
+{{/inline}}
 
-</head>
 
-<body>
-    {{!-- <h1>Hello Word</h1> --}}
+{{#*inline "mainContent"}}
 
-    <main>
-        <div class="block">
-            {{#if messages}}
-            {{#each messages}}
-            <h1 id="{{this.id}}" title="{{this.title}}">{{this.message}}</h1>
-            {{/each}}
-            {{/if}}
-        </div>
+<div class="block">
+    {{#if main}}
+    {{main}}
+    {{else}}
+    <h1 id="hello" title="Hello Word!!">Hello Word!!</h1>
+    {{/if}}
+</div>
 
-    </main>
+{{/inline}}
 
-    <footer>
-        <p>Created by:</p>
-        <a id="criador" href="https://github.com/Marcos1701" title="acessar github">Marcos N. Santos</a>
-    </footer>
 
-</body>
-
-</html>
+{{/base}}
