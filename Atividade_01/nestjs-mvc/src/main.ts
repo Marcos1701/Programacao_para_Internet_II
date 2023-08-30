@@ -13,7 +13,7 @@ async function bootstrap() {
     .setTitle('Documentação dos Laboratórios')
     .setDescription('Aqui estão os endpoints dos laboratórios..')
     .setVersion('1.0')
-    .addTag('Labs')
+    .addTag('Home')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

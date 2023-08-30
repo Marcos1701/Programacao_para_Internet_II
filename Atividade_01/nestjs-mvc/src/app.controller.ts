@@ -12,7 +12,7 @@ import {
 export class AppController {
 
   constructor(private readonly appService: AppService) { }
-  @ApiTags('Labs')
+  @ApiTags('Home')
   @Get('/')
   @Render('index')
   @ApiResponse({
@@ -38,19 +38,36 @@ export class AppController {
     }
   }
 
+  // Laboratório 2
+
+  @ApiTags('Lab 2')
   @Get('/lab2')
   @Render('lab2')
   @ApiResponse({
     status: 200,
     description: "Operação ocorreu com sucesso"
   })
-  homeLab2(@Req() request: Request, @Res() response: Response) {
-    response.status(200).json({
-      title: 'Lab 2',
-      text: "Seja bem vindo ao Lab 2"
-    });
+  homeLab2(@Res() response: Response) {
+    this.appService.getHomeLab2(response);
   }
 
+  @ApiTags('Lab 2')
+  @Get('/lab2/produtos')
+  @Render('lab2')
+  @ApiResponse({
+    status: 200,
+    description: "Operação ocorreu com sucesso"
+  })
+  produtosLab2(@Req() request: Request, @Res() response: Response) {
+    this.appService.getProdutosLab2(request, response);
+  }
+
+
+
+
+  // Laboratório 1
+
+  @ApiTags('Lab 1')
   @Get('/lab1')
   @Render('lab1')
   @ApiResponse({
@@ -75,6 +92,8 @@ export class AppController {
       ]
     };
   }
+
+  @ApiTags('Lab 1')
   @Get('/lab1/produtos')
   @Render('lab1')
   @ApiResponse({
@@ -108,6 +127,8 @@ export class AppController {
       ]
     };
   }
+
+  @ApiTags('Lab 1')
   @Get('/lab1/produtos/adicionar')
   @Render('lab1')
   @ApiResponse({
@@ -147,11 +168,12 @@ export class AppController {
     };
   }
 
+  @ApiTags('Lab 1')
   @Post('/lab1/produtos/adicionar')
   @Render('lab1')
   @Redirect('/lab1/produtos')
   @ApiResponse({
-    status: 301,
+    status: 201,
     description: "Operação ocorreu com sucesso, redirecionando para a pagina de listagem.."
   })
   @ApiBody({
@@ -173,6 +195,7 @@ export class AppController {
     this.appService.addProduto({ nome });
   }
 
+  @ApiTags('Lab 1')
   @Get('/lab1/produtos/:id/remover')
   @Render('index')
   @Redirect('/lab1/produtos')
@@ -182,6 +205,7 @@ export class AppController {
     this.appService.removeProduto(parseInt(id));
   }
 
+  @ApiTags('Lab 1')
   @Get('/lab1/produtos/:id/mudar-status')
   @Render('lab1')
   @Redirect('/lab1/produtos')
@@ -190,6 +214,8 @@ export class AppController {
   ): void {
     this.appService.mudarStatusProduto(parseInt(id));
   }
+
+  @ApiTags('Hello World')
   @Get('hello-world')
   @Render('index')
   @ApiResponse({

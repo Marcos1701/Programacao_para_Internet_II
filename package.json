@@ -4,5 +4,11 @@
   "main": "index.js",
   "repository": "https://github.com/Marcos1701/Programacao_para_Internet_II.git",
   "author": "Marcos1701 <catce.2022111tads0428@aluno.ifpi.edu.br>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@types/hbs": "^4.0.1"
+  },
+  "dependencies": {
+    "ulidx": "^2.1.0"
+  }
 }
