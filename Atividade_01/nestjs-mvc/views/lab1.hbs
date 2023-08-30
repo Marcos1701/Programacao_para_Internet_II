@@ -1,0 +1,66 @@
+{{#> base}}
+
+{{#*inline "title"}}{{title}}{{/inline}}
+
+{{#*inline "headerContent"}}
+{{#if header}}
+{{header}}
+{{else}}
+{{#if anchors}}
+<ul id="anchors">
+    {{#each anchors}}
+    <li><a href="{{href}}">{{name}}</a></li>
+    {{/each}}
+</ul>
+{{else}}
+<h1> Hello Word</h1>
+{{/if}}
+{{/if}}
+{{/inline}}
+
+
+{{#*inline "mainContent"}}
+
+<div class="block">
+    {{#if main}}
+    {{#if main.title}}
+    <h1 id={{main.title}}>{{main.title}}</h1>
+    {{#if main.produtos}}
+    <ul>
+        {{#each main.produtos}}
+        <li class="produto">
+            <h2>{{nome}}</h2>
+            <p>{{status}}</p>
+            <a href="/produtos/{{id}}/remover">remover</a>
+            <a href="/produtos/{{id}}/mudar-status">Mudar Status</a>
+        </li>
+        {{/each}}
+    </ul>
+    {{else}}
+    {{#if main.form}}
+    <form action="{{main.form.action}}" method="{{main.form.method}}">
+        {{#each main.form.inputs}}
+        <input type="{{type}}" name="{{name}}" placeholder="{{placeholder}}">
+        {{/each}}
+        <button type="submit">{{main.form.submitText}}</button>
+    </form>
+    {{/if}}
+    {{/if}}
+    {{else}}
+    {{main}}
+    {{/if}}
+    {{else}}
+    <h1 id="hello" title="Hello Word!!">Hello Word!!</h1>
+    {{/if}}
+</div>
+
+{{/inline}}
+
+
+{{/base}}
+
+{{#if link_css}}
+{{#each link_css}}
+<link rel="stylesheet" href="css/{{this}}">
+{{/each}}
+{{/if}}

@@ -14,3 +14,21 @@ body {
     margin: 0 auto;
     padding: 0 30px;
 }
+
+ul {
+    list-style: none;
+
+}
+
+li {
+    list-style: none;
+}
+
+
+a {
+    text-decoration: none;
+}
+
+button {
+    cursor: pointer;
+}

@@ -1,0 +1,31 @@
+ul#anchors {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 5px 0;
+    margin: 20px 0;
+}
+
+ul#anchors li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 50px;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+ul#anchors li:hover {
+    transform: scale(1.1);
+}
+
+ul#anchors li a {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #000000;
+}

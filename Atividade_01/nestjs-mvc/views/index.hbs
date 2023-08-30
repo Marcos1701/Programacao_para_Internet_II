@@ -1,23 +1,38 @@
-{{#> base}}
+<!DOCTYPE html>
+<html lang="pt-br">
 
-{{#*inline "title"}}{{title}}{{/inline}}
-
-{{#*inline "headerContent"}}
-<h1>{{header}}</h1>
-{{/inline}}
-
-
-{{#*inline "mainContent"}}
-
-<div class="block">
-    {{#if main}}
-    {{main}}
-    {{else}}
-    <h1 id="hello" title="Hello Word!!">Hello Word!!</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    {{#if link_css}}
+    {{#each link_css}}
+    <link rel="stylesheet" href="{{this}}">
+    {{/each}}
     {{/if}}
-</div>
+</head>
 
-{{/inline}}
+<body>
+    {{#if anchors}}
+    <ul id="anchors">
+        {{#each anchors}}
+        <li><a href="{{href}}">{{name}}</a></li>
+        {{/each}}
+    </ul>
+    {{/if}}
 
+    {{#if messages}}
+    <div class="block">
+        {{#each messages}}
+        <h2 id="{{this.id}}" title="{{this.title}}">{{this.message}}</h2>
+        {{/each}}
+    </div>
 
-{{/base}}
+    <footer>
+        <p>Created by:</p>
+        <a id="criador" href="https://github.com/Marcos1701" title="acessar github">Marcos N. Santos</a>
+    </footer>
+    {{/if}}
+</body>
+
+</html>
