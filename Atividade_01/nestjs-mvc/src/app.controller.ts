@@ -1,5 +1,6 @@
 import { Get, Controller, Render, Module, Injectable, Query, Post, Body, Res, Req, Redirect } from '@nestjs/common';
 import { AppService, Page } from './app.service';
+import { Request, Response } from 'express';
 
 @Controller()
 export class AppController {
@@ -25,6 +26,15 @@ export class AppController {
         }
       ]
     }
+  }
+
+  @Get('/lab2')
+  @Render('lab2')
+  homeLab2(@Req() request: Request, @Res() response: Response) {
+    response.status(200).json({
+      title: 'Lab 2',
+      text: "Seja bem vindo ao Lab 2"
+    });
   }
 
   @Get('/lab1')
