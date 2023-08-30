@@ -1,14 +1,24 @@
 import { Get, Controller, Render, Module, Injectable, Query, Post, Body, Res, Req, Redirect } from '@nestjs/common';
-import { AppService, Page } from './app.service';
+import { AppService, Page, ProductBase } from './app.service';
 import { Request, Response } from 'express';
+import {
+  ApiBody,
+  ApiResponse,
+  ApiParam,
+  ApiTags
+} from '@nestjs/swagger'
 
 @Controller()
 export class AppController {
 
   constructor(private readonly appService: AppService) { }
-
+  @ApiTags('Labs')
   @Get('/')
   @Render('index')
+  @ApiResponse({
+    status: 200,
+    description: "Operação ocorreu com sucesso"
+  })
   home() {
     return {
       anchors: [
@@ -30,6 +40,10 @@ export class AppController {
 
   @Get('/lab2')
   @Render('lab2')
+  @ApiResponse({
+    status: 200,
+    description: "Operação ocorreu com sucesso"
+  })
   homeLab2(@Req() request: Request, @Res() response: Response) {
     response.status(200).json({
       title: 'Lab 2',
@@ -39,6 +53,10 @@ export class AppController {
 
   @Get('/lab1')
   @Render('lab1')
+  @ApiResponse({
+    status: 200,
+    description: "Operação ocorreu com sucesso"
+  })
   homeLab1() {
     const retorno: {
       title: string,
@@ -59,6 +77,10 @@ export class AppController {
   }
   @Get('/lab1/produtos')
   @Render('lab1')
+  @ApiResponse({
+    status: 200,
+    description: "Operação ocorreu com sucesso"
+  })
   produtos(): {
     title: string,
     anchors: Page[],
@@ -88,6 +110,10 @@ export class AppController {
   }
   @Get('/lab1/produtos/adicionar')
   @Render('lab1')
+  @ApiResponse({
+    status: 200,
+    description: "Operação ocorreu com sucesso"
+  })
   produtos_adicionar(): {
     title: string,
     anchors: Page[],
@@ -124,9 +150,26 @@ export class AppController {
   @Post('/lab1/produtos/adicionar')
   @Render('lab1')
   @Redirect('/lab1/produtos')
+  @ApiResponse({
+    status: 301,
+    description: "Operação ocorreu com sucesso, redirecionando para a pagina de listagem.."
+  })
+  @ApiBody({
+    required: true,
+    type: 'string',
+    schema: {
+      type: 'string',
+      properties: {
+        nome: {
+          type: 'string'
+        }
+      }
+    }
+  })
   produto_adicionar(
     @Body('nome') nome: string
   ): void {
+    
     this.appService.addProduto({ nome });
   }
 
@@ -149,6 +192,9 @@ export class AppController {
   }
   @Get('hello-world')
   @Render('index')
+  @ApiResponse({
+    type: "application/json"
+  })
   root() {
     return {
       messages: [
