@@ -10,6 +10,12 @@ export interface Page {
   href: string
 }
 
+export class ProductBase{
+  constructor(
+    public nome: string
+  ){}
+}
+
 class Produto {
   constructor(
     public id: number,
