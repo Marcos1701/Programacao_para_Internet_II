@@ -169,7 +169,7 @@ export class AppController {
   produto_adicionar(
     @Body('nome') nome: string
   ): void {
-    
+
     this.appService.addProduto({ nome });
   }
 
