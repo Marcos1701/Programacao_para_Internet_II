@@ -90,7 +90,8 @@ export class Produto {
 }
 
 const Produtos: Produto[] = [];
-const ProdutosLab2: Produto[] = await getProdutos();
+const ProdutosLab2: Promise<Produto[]> = getProdutos();
+
 const pages: Page[] = [
   {
     name: 'Home',
@@ -98,11 +99,11 @@ const pages: Page[] = [
   },
   {
     name: 'Lista de Produtos',
-    href: 'produtos'
+    href: 'lab1/produtos'
   },
   {
     name: 'Adicionar Produto',
-    href: 'produtos/adicionar'
+    href: 'lab1/produtos/adicionar'
   }
 ]
 
@@ -117,14 +118,14 @@ export class AppService {
     })
   }
 
-  async getProdutosLab2(req: Request, res: Response): void {
+  async getProdutosLab2(req: Request, res: Response): Promise<void> {
     res.status(200).json({
       message: "Lista de Produtos",
       produtos: ProdutosLab2
     })
   }
 
-  async getProdutoLab2(@Body('id') id: string, res: Response): void {
+  async getProdutoLab2(@Body('id') id: string, res: Response): Promise<void> {
 
     if (!id) {
       res.status(400).json({
@@ -133,7 +134,7 @@ export class AppService {
       return;
     }
 
-    const produto = await getProduto();
+    const produto = await getProduto(id);
     if (!produto) {
       res.status(404).json({
         message: "Produto não encontrado."

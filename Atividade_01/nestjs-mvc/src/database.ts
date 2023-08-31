@@ -1,5 +1,6 @@
 import { Client } from 'pg'
 import { Produto } from './app.service';
+import { Response } from 'express';
 
 const db = new Client({
     host: 'dpg-cjo8lcb6fquc73bbu70g-a.oregon-postgres.render.com',
@@ -47,7 +48,7 @@ const db = new Client({
     });
 })();
 
-const getProdutos: Promise<Produto[]> = async () => {
+const getProdutos: () => Promise<Produto[] | null> = async () => {
     const res = await db.query('SELECT * FROM produtos;');
     const produtos: Produto[] = [];
     for (const row of res.rows) {
@@ -64,7 +65,7 @@ const getProdutos: Promise<Produto[]> = async () => {
     return produtos;
 }
 
-const getProduto: Promise<Produto[] | null> = async (id: string) => {
+const getProduto: (id: string) => Promise<Produto | null> = async (id: string) => {
     if(!id || id.length == 0){
         return null;
     }
@@ -85,7 +86,7 @@ const getProduto: Promise<Produto[] | null> = async (id: string) => {
     return produtos;
 }
 
-const addProduto: Promise<void> = async (produto: Produto) => {
+const addProduto:(produto: Produto) =>  Promise<void> = async (produto: Produto) => {
     const res = await db.query(`INSERT INTO produtos (nome, status, taxa_rentabilidade, prazo, taxa_adm, vencimento, liquidez)
     VALUES ('${produto.nome}', '${produto.status}', ${produto.taxa_rentabilidade}, ${produto.prazo}, ${produto.taxa_adm}, '${produto.vencimento}', ${produto.liquidez});`).then(res => {
         console.log(res);
@@ -94,7 +95,7 @@ const addProduto: Promise<void> = async (produto: Produto) => {
     });
 }
 
-const removeProduto: Promise<void> = async (id: string) => {
+const removeProduto: (id: string) => Promise<void> = async (id: string) => {
     const res = await db.query(`DELETE FROM produtos WHERE id = ${id};`).then(res => {
         console.log(res);
     }).catch(err => {
@@ -102,7 +103,7 @@ const removeProduto: Promise<void> = async (id: string) => {
     });
 }
 
-const updateProduto: Promise<void> = async (id: string, produto: Produto) => {
+const updateProduto: (id: string, produto: Produto) => Promise<void> = async (id: string, produto: Produto) => {
     const res = await db.query(`UPDATE produtos SET nome = '${produto.nome}', status = '${produto.status}', taxa_rentabilidade = ${produto.taxa_rentabilidade}, prazo = ${produto.prazo}, taxa_adm = ${produto.taxa_adm}, vencimento = '${produto.vencimento}', liquidez = ${produto.liquidez} WHERE id = ${id};`).then(res => {
         console.log(res);
     }).catch(err => {
@@ -111,12 +112,28 @@ const updateProduto: Promise<void> = async (id: string, produto: Produto) => {
 
 }
 
-const mudar_status = async (id: string) => {
+const mudar_status: (id: string, res: Response) => Promise<void> = async (id: string, res: Response) => {
 
-    
-    
+    if(!id){
+        res.status(400).json({
+            message: "Identificador inválido!!"
+        })
+    }
+
+    try{
+        db.query(`
+            SELECT ALTERAR_STATUS(${id})
+        `)
+        res.status(200).json({
+            message: "Status alterado com sucesso!!"
+        });
+    }catch(e){
+        res.status(400).json({
+            message: e.message? e.message : "Erro ao alterar status!!"
+        });
+    }
 }
 
-export { getProdutos, getProduto, addProduto, removeProduto, updateProduto };
+export { getProdutos, getProduto, addProduto, removeProduto, updateProduto, mudar_status };
 
 export default db;
