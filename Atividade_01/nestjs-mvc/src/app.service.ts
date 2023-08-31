@@ -1,6 +1,7 @@
 import { Body, Injectable } from '@nestjs/common';
 import { ulid } from 'ulidx';
 import { Request, Response } from 'express';
+import { getProdutos, getProduto, addProduto, removeProduto, updateProduto} from './database'
 
 export enum Status {
   ATIVO = 'ativo',
@@ -89,7 +90,7 @@ export class Produto {
 }
 
 const Produtos: Produto[] = [];
-const ProdutosLab2: Produto[] = [];
+const ProdutosLab2: Produto[] = await getProdutos();
 const pages: Page[] = [
   {
     name: 'Home',
@@ -116,34 +117,133 @@ export class AppService {
     })
   }
 
-  getProdutosLab2(req: Request, res: Response): void {
+  async getProdutosLab2(req: Request, res: Response): void {
     res.status(200).json({
       message: "Lista de Produtos",
-      produtos: Produtos
+      produtos: ProdutosLab2
     })
   }
 
-  getProdutoLab2(@Body('id') id: string, res: Response): void {
+  async getProdutoLab2(@Body('id') id: string, res: Response): void {
 
     if (!id) {
       res.status(400).json({
-        message: "Id não informado"
+        message: "Id não informado."
       })
       return;
     }
 
-    const produto = Produtos.find((produto) => produto.id === id);
+    const produto = await getProduto();
     if (!produto) {
       res.status(404).json({
-        message: "Produto não encontrado"
+        message: "Produto não encontrado."
       })
       return;
     }
     res.status(200).json({
-      message: "Produto",
+      message: "Produto encontrado com sucesso!",
       produto: produto
     })
   }
+
+  async addProdutoLab2(body: {
+    nome: string, 
+    status: Status, 
+    taxa_rentabilidade: number, 
+    prazo: number, 
+    taxa_adm: number, 
+    vencimento: Date, 
+    liquidez: boolean
+  }, res: Response): Promise<void>{
+    Object.keys(body).forEach((key) =>{
+      if(body[key] == null){
+        res.status(404).json({
+          message: `O valor de "${key}" é nulo/inválido.`
+        });
+        return;
+      }
+    });
+
+    const produto = new Produto(
+      body.nome,
+      body.status,
+      body.taxa_rentabilidade,
+      body.prazo,
+      body.taxa_adm,
+      body.vencimento,
+      body.liquidez
+    );
+    try{
+      addProduto(produto);
+      res.status(200).json({
+        message: "Produto adicionado com sucesso!",
+        produto: produto
+      });
+    }catch(e){
+      res.status(404).json({
+        message: e.message ? e.message : "Ocorreu um erro ao adicionar o Produto."
+      });
+      return;
+    }
+  }
+
+  async removerProdutoLab2(id: string, res: Response){
+    if(!id){
+      res.status(400).json({
+        message: "Id não informado."
+      });
+      return;
+    }
+
+    try{
+      removeProduto(id);
+      res.status(201).json({
+        message: "Produto removido com sucesso!"
+      });
+    }catch(e){
+      res.status(404).json({
+        message: "Produto não encontrado!!"
+      });
+      return;
+    }
+  }
+
+  async atualizarProduto(
+    body: {
+      id: string,
+      nome: string, 
+      status: Status, 
+      taxa_rentabilidade: number, 
+      prazo: number, 
+      taxa_adm: number, 
+      vencimento: Date, 
+      liquidez: boolean
+    }, res: Response){
+      try{
+        const produto = await getProduto(body.id);
+        const novo_produto = new Produto(
+          body.nome ? body.nome : produto.nome, 
+          body.status ? body.status : produto.status,
+          body.taxa_rentabilidade ? body.taxa_rentabilidade : produto.taxa_rentabilidade,
+          body.prazo ? body.prazo : produto.prazo,
+          body.taxa_adm ? body.taxa_adm : produto.taxa_adm,
+          body.vencimento ? body.vencimento : produto.vencimento,
+          body.liquidez ? body.liquidez : produto.liquidez
+        );
+
+        updateProduto(body.id, novo_produto);
+        res.status(200).json({
+          message: "Produto atualizado com sucesso!"
+        });
+      }catch(e){
+        res.status(404).json({
+          message: "Produto não encontrado!!"
+        });
+        return;
+     }
+  }
+
+
 
 
   // Laboratório 01
