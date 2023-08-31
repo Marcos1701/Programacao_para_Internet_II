@@ -1,5 +1,5 @@
 import { Get, Controller, Render, Module, Injectable, Query, Post, Body, Res, Req, Redirect } from '@nestjs/common';
-import { AppService, Page, ProductBase } from './app.service';
+import { AppService, Page, Status } from './app.service';
 import { Request, Response } from 'express';
 import {
   ApiBody,
@@ -189,10 +189,9 @@ export class AppController {
     }
   })
   produto_adicionar(
-    @Body('nome') nome: string
+    @Body() body: { nome: string, status: Status, taxa_rentabilidade: number, prazo: number, taxa_adm: number, vencimento: Date, liquidez: boolean }
   ): void {
-
-    this.appService.addProduto({ nome });
+    this.appService.addProduto(body);
   }
 
   @ApiTags('Lab 1')
@@ -202,7 +201,7 @@ export class AppController {
   produto_remover(
     @Query('id') id: string
   ): void {
-    this.appService.removeProduto(parseInt(id));
+    this.appService.removeProduto(id);
   }
 
   @ApiTags('Lab 1')
@@ -212,7 +211,7 @@ export class AppController {
   produto_mudar_status(
     @Query('id') id: string
   ): void {
-    this.appService.mudarStatusProduto(parseInt(id));
+    this.appService.mudarStatusProduto(id);
   }
 
   @ApiTags('Hello World')

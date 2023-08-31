@@ -1,8 +1,8 @@
 import { Body, Injectable } from '@nestjs/common';
 import { ulid } from 'ulidx';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 
-enum Status {
+export enum Status {
   ATIVO = 'ativo',
   INATIVO = 'inativo'
 }
@@ -18,7 +18,7 @@ export class ProductBase {
   ) { }
 }
 
-class Produto {
+export class Produto {
   private _id: string = ulid();
   private _nome: string;
   private _status: Status;
@@ -89,6 +89,7 @@ class Produto {
 }
 
 const Produtos: Produto[] = [];
+const ProdutosLab2: Produto[] = [];
 const pages: Page[] = [
   {
     name: 'Home',
