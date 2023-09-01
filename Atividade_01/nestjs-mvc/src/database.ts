@@ -25,7 +25,7 @@ const db = new Client({
     });
 })();
 
-const getProdutos = async () => {
+async function getProdutos() {
     const res = await db.query('SELECT * FROM produtos;');
     const produtos: Produto[] = [];
     for (const row of res.rows) {
@@ -39,7 +39,7 @@ const getProdutos = async () => {
             row.liquidez
         ));
     }
-    return res.rows;
+    return produtos;
 }
 
 const addProduto = async (produto: Produto) => {

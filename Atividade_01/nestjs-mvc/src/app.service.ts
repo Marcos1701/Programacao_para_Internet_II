@@ -1,6 +1,8 @@
 import { Body, Injectable } from '@nestjs/common';
 import { ulid } from 'ulidx';
 import { Request, Response } from 'express';
+import { get } from 'http';
+import { getProdutos } from './database';
 
 export enum Status {
   ATIVO = 'ativo',
@@ -37,6 +39,27 @@ export class Produto {
     vencimento: Date,
     liquidez: boolean
   ) {
+
+    if (!nome || nome.length > 32) {
+      throw new Error('Nome inválido');
+    }
+    if (!status) {
+      throw new Error('Status inválido');
+    }
+    if (!taxa_rentabilidade || taxa_rentabilidade < 0 || taxa_rentabilidade > 20) {
+      throw new Error('Taxa de rentabilidade inválida');
+    }
+    if (!prazo || prazo < 0 || prazo > 48) throw new Error('Prazo inválido');
+    if (!taxa_adm || taxa_adm < 0) {
+      throw new Error('Taxa de administração inválida');
+    }
+    if (!vencimento || vencimento < new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1) // Vencimento não pode ser menor que a data atual
+    ) {
+      throw new Error('Vencimento inválido');
+    }
+    if (liquidez === undefined) {
+      throw new Error('Liquidez inválida');
+    }
 
     this._nome = nome;
     this._status = status;
@@ -86,10 +109,76 @@ export class Produto {
     }
     this._status = Status.ATIVO;
   }
+
+  set nome(nome: string) {
+    if (!nome || this.nome === nome || nome.length > 32) { return; }
+
+    this._nome = nome;
+  }
+
+  set taxa_rentabilidade(taxa_rentabilidade: number) {
+    if (!taxa_rentabilidade || this.taxa_rentabilidade === taxa_rentabilidade
+      || taxa_rentabilidade < 0 || taxa_rentabilidade > 20) {
+      throw new Error('Taxa de rentabilidade inválida');
+    }
+    this._taxa_rentabilidade = taxa_rentabilidade;
+  }
+
+  set prazo(prazo: number) {
+    if (!prazo || this.prazo === prazo || prazo < 0 || prazo > 48) {
+      throw new Error('Prazo inválido');
+    }
+    this._prazo = prazo;
+  }
+
+  set taxa_adm(taxa_adm: number) {
+    if (!taxa_adm || this.taxa_adm === taxa_adm || taxa_adm < 0) {
+      throw new Error('Taxa de administração inválida');
+    }
+    this._taxa_adm = taxa_adm;
+  }
+
+  set vencimento(vencimento: Date) {
+    if (!vencimento || this.vencimento === vencimento || vencimento < new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1) // Vencimento não pode ser menor que a data atual
+    ) {
+      throw new Error('Vencimento inválido');
+    }
+    this._vencimento = vencimento;
+  }
+
+  set liquidez(liquidez: boolean) {
+    if (liquidez === undefined || this.liquidez === liquidez) {
+      throw new Error('Liquidez inválida');
+    }
+    this._liquidez = liquidez;
+  }
+
+  toJSON(): {
+    id: string,
+    nome: string,
+    status: Status,
+    taxa_rentabilidade: number,
+    prazo: number,
+    taxa_adm: number,
+    vencimento: Date,
+    liquidez: boolean
+  } {
+    return {
+      id: this._id,
+      nome: this._nome,
+      status: this._status,
+      taxa_rentabilidade: this._taxa_rentabilidade,
+      prazo: this._prazo,
+      taxa_adm: this._taxa_adm,
+      vencimento: this._vencimento,
+      liquidez: this._liquidez
+    }
+  }
+
 }
 
 const Produtos: Produto[] = [];
-const ProdutosLab2: Produto[] = [];
+
 const pages: Page[] = [
   {
     name: 'Home',
@@ -117,10 +206,17 @@ export class AppService {
   }
 
   getProdutosLab2(req: Request, res: Response): void {
-    res.status(200).json({
-      message: "Lista de Produtos",
-      produtos: Produtos
-    })
+    getProdutos().then((produtos: Produto[]) => {
+      res.status(200).json({
+        message: "Lista de Produtos",
+        produtos: produtos
+      })
+    }).catch((err) => {
+      res.status(500).json({
+        message: "Erro ao buscar produtos"
+      })
+      console.log(err.message);
+    });
   }
 
   getProdutoLab2(@Body('id') id: string, res: Response): void {
