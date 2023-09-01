@@ -66,15 +66,15 @@ async function getProdutos() {
 }
 
 const getProduto: (id: string) => Promise<Produto | null> = async (id: string) => {
-    if(!id || id.length == 0){
+    if (!id || id.length == 0) {
         return null;
     }
     const res = await db.query(`SELECT * FROM produtos WHERE id = ${id};`);
-    if(res.rows.length === 0){
+    if (res.rows.length === 0) {
         return null;
     }
     const row = res.rows[0];
-    const produtos: Produto = new Produto(
+    const produto: Produto = new Produto(
         row.nome,
         row.status,
         row.taxa_rentabilidade,
@@ -83,10 +83,10 @@ const getProduto: (id: string) => Promise<Produto | null> = async (id: string) =
         row.vencimento,
         row.liquidez
     )
-    return produtos;
+    return produto;
 }
 
-const addProduto:(produto: Produto) =>  Promise<void> = async (produto: Produto) => {
+const addProduto: (produto: Produto) => Promise<void> = async (produto: Produto) => {
     const res = await db.query(`INSERT INTO produtos (nome, status, taxa_rentabilidade, prazo, taxa_adm, vencimento, liquidez)
     VALUES ('${produto.nome}', '${produto.status}', ${produto.taxa_rentabilidade}, ${produto.prazo}, ${produto.taxa_adm}, '${produto.vencimento}', ${produto.liquidez});`).then(res => {
         console.log(res);
@@ -114,22 +114,22 @@ const updateProduto: (id: string, produto: Produto) => Promise<void> = async (id
 
 const mudar_status: (id: string, res: Response) => Promise<void> = async (id: string, res: Response) => {
 
-    if(!id){
+    if (!id) {
         res.status(400).json({
             message: "Identificador inválido!!"
         })
     }
 
-    try{
+    try {
         db.query(`
             SELECT ALTERAR_STATUS(${id})
         `)
         res.status(200).json({
             message: "Status alterado com sucesso!!"
         });
-    }catch(e){
+    } catch (e) {
         res.status(400).json({
-            message: e.message? e.message : "Erro ao alterar status!!"
+            message: e.message ? e.message : "Erro ao alterar status!!"
         });
     }
 }
