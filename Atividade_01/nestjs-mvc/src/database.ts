@@ -23,7 +23,7 @@ const db = new Client({
         vencimento DATE NOT NULL, liquidez BOOLEAN NOT NULL
         );
     
-    CREATE OR REPLACE FUNCTION ALTERAR_STATUS(id_prod: varchar)
+    CREATE OR REPLACE FUNCTION ALTERAR_STATUS(id_prod varchar)
     RETURNS VOID AS $$
     BEGIN
     
@@ -39,6 +39,7 @@ const db = new Client({
         UPDATE PRODUTOS
         SET STATUS = 'A'
         WHERE id = id_prod;
+	END IF;
 
     END;
     $$
