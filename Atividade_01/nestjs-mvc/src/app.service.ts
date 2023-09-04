@@ -1,11 +1,11 @@
 import { Body, Injectable } from '@nestjs/common';
 import { ulid } from 'ulidx';
 import { Request, Response } from 'express';
-import { getProdutos, getProduto, addProduto, removeProduto, updateProduto} from './database'
+import { getProdutos, getProduto, addProduto, removeProduto, updateProduto } from './database'
 
 export enum Status {
-  ATIVO = 'ativo',
-  INATIVO = 'inativo'
+  DISPONIVEL = 'D',
+  INDISPONIVEL = 'I'
 }
 
 export interface Page {
@@ -102,11 +102,11 @@ export class Produto {
   }
 
   alterarStatus(): void {
-    if (this._status === Status.ATIVO) {
-      this._status = Status.INATIVO;
+    if (this._status === Status.DISPONIVEL) {
+      this._status = Status.INDISPONIVEL;
       return;
     }
-    this._status = Status.ATIVO;
+    this._status = Status.DISPONIVEL;
   }
 
   set nome(nome: string) {
@@ -241,16 +241,16 @@ export class AppService {
   }
 
   async addProdutoLab2(body: {
-    nome: string, 
-    status: Status, 
-    taxa_rentabilidade: number, 
-    prazo: number, 
-    taxa_adm: number, 
-    vencimento: Date, 
+    nome: string,
+    status: Status,
+    taxa_rentabilidade: number,
+    prazo: number,
+    taxa_adm: number,
+    vencimento: Date,
     liquidez: boolean
-  }, res: Response): Promise<void>{
-    Object.keys(body).forEach((key) =>{
-      if(body[key] == null){
+  }, res: Response): Promise<void> {
+    Object.keys(body).forEach((key) => {
+      if (body[key] == null) {
         res.status(404).json({
           message: `O valor de "${key}" é nulo/inválido.`
         });
@@ -267,13 +267,13 @@ export class AppService {
       body.vencimento,
       body.liquidez
     );
-    try{
+    try {
       addProduto(produto);
       res.status(200).json({
         message: "Produto adicionado com sucesso!",
         produto: produto
       });
-    }catch(e){
+    } catch (e) {
       res.status(404).json({
         message: e.message ? e.message : "Ocorreu um erro ao adicionar o Produto."
       });
@@ -281,20 +281,20 @@ export class AppService {
     }
   }
 
-  async removerProdutoLab2(id: string, res: Response){
-    if(!id){
+  async removerProdutoLab2(id: string, res: Response) {
+    if (!id) {
       res.status(400).json({
         message: "Id não informado."
       });
       return;
     }
 
-    try{
+    try {
       removeProduto(id);
       res.status(201).json({
         message: "Produto removido com sucesso!"
       });
-    }catch(e){
+    } catch (e) {
       res.status(404).json({
         message: "Produto não encontrado!!"
       });
@@ -305,36 +305,36 @@ export class AppService {
   async atualizarProduto(
     body: {
       id: string,
-      nome: string, 
-      status: Status, 
-      taxa_rentabilidade: number, 
-      prazo: number, 
-      taxa_adm: number, 
-      vencimento: Date, 
+      nome: string,
+      status: Status,
+      taxa_rentabilidade: number,
+      prazo: number,
+      taxa_adm: number,
+      vencimento: Date,
       liquidez: boolean
-    }, res: Response){
-      try{
-        const produto = await getProduto(body.id);
-        const novo_produto = new Produto(
-          body.nome ? body.nome : produto.nome, 
-          body.status ? body.status : produto.status,
-          body.taxa_rentabilidade ? body.taxa_rentabilidade : produto.taxa_rentabilidade,
-          body.prazo ? body.prazo : produto.prazo,
-          body.taxa_adm ? body.taxa_adm : produto.taxa_adm,
-          body.vencimento ? body.vencimento : produto.vencimento,
-          body.liquidez ? body.liquidez : produto.liquidez
-        );
+    }, res: Response) {
+    try {
+      const produto = await getProduto(body.id);
+      const novo_produto = new Produto(
+        body.nome ? body.nome : produto.nome,
+        body.status ? body.status : produto.status,
+        body.taxa_rentabilidade ? body.taxa_rentabilidade : produto.taxa_rentabilidade,
+        body.prazo ? body.prazo : produto.prazo,
+        body.taxa_adm ? body.taxa_adm : produto.taxa_adm,
+        body.vencimento ? body.vencimento : produto.vencimento,
+        body.liquidez ? body.liquidez : produto.liquidez
+      );
 
-        updateProduto(body.id, novo_produto);
-        res.status(200).json({
-          message: "Produto atualizado com sucesso!"
-        });
-      }catch(e){
-        res.status(404).json({
-          message: "Produto não encontrado!!"
-        });
-        return;
-     }
+      updateProduto(body.id, novo_produto);
+      res.status(200).json({
+        message: "Produto atualizado com sucesso!"
+      });
+    } catch (e) {
+      res.status(404).json({
+        message: "Produto não encontrado!!"
+      });
+      return;
+    }
   }
 
 
@@ -394,6 +394,7 @@ export class AppService {
     }
   }
 
+
   getProdutosAdicionar(): {
     title: string,
     form: {
@@ -402,7 +403,12 @@ export class AppService {
       inputs: {
         name: string,
         type: string,
-        placeholder: string
+        placeholder: string,
+        select?: boolean,
+        options?: {
+          value: string,
+          text: string
+        }[]
       }[],
       submitText: string
     },
@@ -411,7 +417,7 @@ export class AppService {
     return {
       title: 'Adicionar Produto',
       form: {
-        action: '/produtos/adicionar',
+        action: '/lab1/produtos/adicionar',
         method: 'POST',
         inputs: [
           {
@@ -421,7 +427,18 @@ export class AppService {
           },
           {
             name: 'status',
-            type: 'text',
+            type: 'select',
+            select: true,
+            options: [
+              {
+                value: 'D',
+                text: 'Disponível'
+              },
+              {
+                value: 'I',
+                text: 'Indisponível'
+              }
+            ],
             placeholder: 'Status do Produto'
           },
           {
@@ -446,8 +463,20 @@ export class AppService {
           },
           {
             name: 'liquidez',
-            type: 'boolean',
-            placeholder: 'Liquidez'
+            type: 'select',
+            placeholder: 'Liquidez',
+            select: true,
+            options: [
+              {
+                value: 'true',
+                text: 'Sim'
+              },
+              {
+                value: 'false',
+                text: 'Não'
+              }
+            ]
+
           }
         ],
         submitText: 'Adicionar'
@@ -462,6 +491,7 @@ export class AppService {
   }): {
     status: number
   } {
+    console.log(produto);
     const newProduto: Produto = new Produto(produto.nome, produto.status, produto.taxa_rentabilidade, produto.prazo, produto.taxa_adm, produto.vencimento, produto.liquidez);
     Produtos.push(newProduto);
 

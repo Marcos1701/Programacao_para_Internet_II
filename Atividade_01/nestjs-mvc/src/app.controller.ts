@@ -146,7 +146,11 @@ export class AppController {
         inputs: {
           name: string,
           type: string,
-          placeholder: string
+          placeholder: string,
+          options?: {
+            value: string,
+            text: string
+          }[]
         }[],
         submitText: string
       }

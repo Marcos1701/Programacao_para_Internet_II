@@ -31,6 +31,15 @@
         <li class="produto">
             <h2>{{nome}}</h2>
             <p>{{status}}</p>
+            <p>taxa de rentabilidade: {{taxa_rentabilidade}}</p>
+            <p>prazo: {{prazo}}</p>
+            <p>taxa de administração: {{taxa_adm}}</p>
+            <p>vencimento: {{vencimento}}</p>
+            {{#if liquidez}}
+            <p>liquidez: ativa</p>
+            {{else}}
+            <p>liquidez: desativada</p>
+            {{/if}}
             <a href="/produtos/{{id}}/remover">remover</a>
             <a href="/produtos/{{id}}/mudar-status">Mudar Status</a>
         </li>
@@ -40,7 +49,16 @@
     {{#if main.form}}
     <form action="{{main.form.action}}" method="{{main.form.method}}">
         {{#each main.form.inputs}}
+        <label for={{name}}>{{placeholder}}: </label>
+        {{#if select}}
+        <select title="{{name}}">
+            {{#each options}}
+            <option value="{{value}}">{{text}}</option>
+            {{/each}}
+        </select>
+        {{else}}
         <input type="{{type}}" name="{{name}}" placeholder="{{placeholder}}">
+        {{/if}}
         {{/each}}
         <button type="submit">{{main.form.submitText}}</button>
     </form>
@@ -61,6 +79,6 @@
 
 {{#if link_css}}
 {{#each link_css}}
-<link rel="stylesheet" href="css/{{this}}">
+<link rel="stylesheet" href="/css/{{this}}">
 {{/each}}
 {{/if}}
