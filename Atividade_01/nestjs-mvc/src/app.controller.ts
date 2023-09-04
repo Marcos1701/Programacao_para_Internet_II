@@ -7,6 +7,7 @@ import {
   ApiParam,
   ApiTags
 } from '@nestjs/swagger'
+import { error } from 'console';
 
 @Controller()
 export class AppController {
@@ -72,6 +73,10 @@ export class AppController {
   @ApiResponse({
     status: 200,
     description: "Operação ocorreu com sucesso"
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: "Ocorre quando o id é inválido ou não foi informado"
   })
   produtoLab2(@Body('id') id: string, @Req() request: Request, @Res() response: Response) {
     if (!id) {
