@@ -109,7 +109,7 @@ const removeProduto: (id: string) => Promise<void> = async (id: string) => {
 }
 
 const updateProduto: (id: string, produto: Produto) => Promise<void> = async (id: string, produto: Produto) => {
-    const res = await db.query(`UPDATE produto SET nome = '${produto.nome}', status = '${produto.status}', taxa_rentabilidade = ${produto.taxa_rentabilidade}, prazo = ${produto.prazo}, taxa_adm = ${produto.taxa_adm}, vencimento = '${produto.vencimento}', liquidez = ${produto.liquidez} WHERE id = ${id};`).then(res => {
+    const res = await db.query(`UPDATE produto SET nome = '${produto.nome}', status = '${produto.status}', taxa_rentabilidade = ${produto.taxa_rentabilidade}, prazo = ${produto.prazo}, taxa_adm = ${produto.taxa_adm}, vencimento = '${produto.vencimento}', liquidez = ${produto.liquidez ? 'S' : 'N'} WHERE id = ${id};`).then(res => {
         console.log(res);
     }).catch(err => {
         console.log(err);

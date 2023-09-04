@@ -1,4 +1,4 @@
-import { Body, Injectable } from '@nestjs/common';
+import { Body, Injectable, HttpStatus } from '@nestjs/common';
 import { ulid } from 'ulidx';
 import { Request, Response } from 'express';
 import { getProdutos, getProduto, addProduto, removeProduto, updateProduto } from './database'
@@ -7,6 +7,8 @@ export enum Status {
   DISPONIVEL = 'D',
   INDISPONIVEL = 'I'
 }
+
+HttpStatus.CONTINUE
 
 export interface Page {
   name: string,
@@ -199,19 +201,19 @@ export class AppService {
 
   // Laboratório 02
   getHomeLab2(res: Response): void {
-    res.status(200).json({
+    res.status(HttpStatus.OK).json({
       message: "Seja bem vindo ao Lab 2!"
     })
   }
 
-  getProdutosLab2(req: Request, res: Response): void {
-    getProdutos().then((produtos: Produto[]) => {
-      res.status(200).json({
+  async getProdutosLab2(req: Request, res: Response): Promise<void> {
+    await getProdutos().then((produtos: Produto[]) => {
+      res.status(HttpStatus.OK).json({
         message: "Lista de Produtos",
         produtos: produtos
       })
     }).catch((err) => {
-      res.status(500).json({
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         message: "Erro ao buscar produtos"
       })
       console.log(err.message);
@@ -220,21 +222,14 @@ export class AppService {
 
   async getProdutoLab2(@Body('id') id: string, res: Response): Promise<void> {
 
-    if (!id) {
-      res.status(400).json({
-        message: "Id não informado."
-      })
-      return;
-    }
-
     const produto = await getProduto(id);
     if (!produto) {
-      res.status(404).json({
+      res.status(HttpStatus.NOT_FOUND).json({
         message: "Produto não encontrado."
       })
       return;
     }
-    res.status(200).json({
+    res.status(HttpStatus.OK).json({
       message: "Produto encontrado com sucesso!",
       produto: produto
     })
@@ -251,7 +246,7 @@ export class AppService {
   }, res: Response): Promise<void> {
     Object.keys(body).forEach((key) => {
       if (body[key] == null) {
-        res.status(404).json({
+        res.status(HttpStatus.NOT_FOUND).json({
           message: `O valor de "${key}" é nulo/inválido.`
         });
         return;
@@ -269,12 +264,12 @@ export class AppService {
     );
     try {
       addProduto(produto);
-      res.status(200).json({
+      res.status(HttpStatus.OK).json({
         message: "Produto adicionado com sucesso!",
         produto: produto
       });
     } catch (e) {
-      res.status(404).json({
+      res.status(HttpStatus.NOT_FOUND).json({
         message: e.message ? e.message : "Ocorreu um erro ao adicionar o Produto."
       });
       return;
@@ -283,7 +278,7 @@ export class AppService {
 
   async removerProdutoLab2(id: string, res: Response) {
     if (!id) {
-      res.status(400).json({
+      res.status(HttpStatus.BAD_REQUEST).json({
         message: "Id não informado."
       });
       return;
@@ -291,11 +286,11 @@ export class AppService {
 
     try {
       removeProduto(id);
-      res.status(201).json({
+      res.status(HttpStatus.CREATED).json({
         message: "Produto removido com sucesso!"
       });
     } catch (e) {
-      res.status(404).json({
+      res.status(HttpStatus.NOT_FOUND).json({
         message: "Produto não encontrado!!"
       });
       return;
@@ -326,11 +321,11 @@ export class AppService {
       );
 
       updateProduto(body.id, novo_produto);
-      res.status(200).json({
+      res.status(HttpStatus.OK).json({
         message: "Produto atualizado com sucesso!"
       });
     } catch (e) {
-      res.status(404).json({
+      res.status(HttpStatus.NOT_FOUND).json({
         message: "Produto não encontrado!!"
       });
       return;

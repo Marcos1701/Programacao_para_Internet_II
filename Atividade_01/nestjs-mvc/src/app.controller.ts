@@ -1,4 +1,4 @@
-import { Get, Controller, Render, Module, Injectable, Query, Post, Body, Res, Req, Redirect } from '@nestjs/common';
+import { Get, Controller, Render, Module, Injectable, Query, Post, Body, Res, Req, Redirect, HttpStatus } from '@nestjs/common';
 import { AppService, Page, Status } from './app.service';
 import { Request, Response } from 'express';
 import {
@@ -33,6 +33,10 @@ export class AppController {
         {
           name: 'Lab 2',
           href: '/lab2'
+        },
+        {
+          name: 'Docs',
+          href: '/api'
         }
       ]
     }
@@ -62,6 +66,22 @@ export class AppController {
     this.appService.getProdutosLab2(request, response);
   }
 
+  @ApiTags('Lab 2')
+  @Get('/lab2/produtos/:id')
+  @Render('lab2')
+  @ApiResponse({
+    status: 200,
+    description: "Operação ocorreu com sucesso"
+  })
+  produtoLab2(@Body('id') id: string, @Req() request: Request, @Res() response: Response) {
+    if (!id) {
+      response.status(HttpStatus.BAD_REQUEST).json({
+        message: "Id não informado."
+      })
+      return;
+    }
+    this.appService.getProdutoLab2(id, response);
+  }
 
 
 
