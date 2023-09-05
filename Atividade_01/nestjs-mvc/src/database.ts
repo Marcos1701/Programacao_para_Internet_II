@@ -57,15 +57,18 @@ async function getProdutos(): Promise<Produto[]> {
     const res: QueryResult<any> = await db.query('SELECT * FROM produto;');
     const produtos: Produto[] = [];
     for (const row of res.rows) {
-        produtos.push(new Produto(
+        const produto: Produto = new Produto(
             row.nome,
-            row.status,
             row.taxa_rentabilidade,
             row.prazo,
             row.taxa_adm,
             row.vencimento,
             row.liquidez
-        ));
+        )
+        if (row.status != produto.status[0]) {
+            produto.alterarStatus();
+        }
+        produtos.push(produto);
     }
     return produtos;
 }
@@ -81,39 +84,44 @@ const getProduto: (id: string) => Promise<Produto | null> = async (id: string) =
     const row = res.rows[0];
     const produto: Produto = new Produto(
         row.nome,
-        row.status,
         row.taxa_rentabilidade,
         row.prazo,
         row.taxa_adm,
         row.vencimento,
-        row.liquidez
+        row.liquidez === 'S'
     )
+    if (row.status != produto.status[0]) {
+        produto.alterarStatus();
+    }
     return produto;
 }
 
 const addProduto: (produto: Produto) => Promise<void> = async (produto: Produto) => {
-    const res = await db.query(`INSERT INTO produto (nome, status, taxa_rentabilidade, prazo, taxa_adm, vencimento, liquidez)
-    VALUES ('${produto.nome}', '${produto.status}', ${produto.taxa_rentabilidade}, ${produto.prazo}, ${produto.taxa_adm}, '${produto.vencimento}', ${produto.liquidez});`).then(res => {
-        console.log(res);
-    }).catch(err => {
-        console.log(err);
-    });
+
+    if (!produto) {
+        throw new Error("Produto inválido!!");
+    }
+    try {
+        await db.query(`INSERT INTO produto (nome, status, taxa_rentabilidade, prazo, taxa_adm, vencimento, liquidez)
+    VALUES ('${produto.nome}', '${produto.status}', ${produto.taxa_rentabilidade}, ${produto.prazo}, ${produto.taxa_adm}, '${produto.vencimento}', ${produto.liquidez});`)
+    } catch (e) {
+        throw new Error(`Ocorreu um erro ao adicionar o produto\n=> ${e.message}`);
+    }
 }
 
 const removeProduto: (id: string) => Promise<void> = async (id: string) => {
-    const res = await db.query(`DELETE FROM produto WHERE id = ${id};`).then(res => {
-        console.log(res);
-    }).catch(err => {
-        console.log(err);
-    });
+    try {
+        await db.query(`DELETE FROM produto WHERE id = '${id}';`)
+    } catch (e) {
+        throw new Error(`Ocorreu um erro ao remover o produto\n=> ${e.message}`);
+    }
 }
 
 const updateProduto: (id: string, produto: Produto) => Promise<void> = async (id: string, produto: Produto) => {
-    const res = await db.query(`UPDATE produto SET nome = '${produto.nome}', status = '${produto.status}', taxa_rentabilidade = ${produto.taxa_rentabilidade}, prazo = ${produto.prazo}, taxa_adm = ${produto.taxa_adm}, vencimento = '${produto.vencimento}', liquidez = ${produto.liquidez ? 'S' : 'N'} WHERE id = ${id};`).then(res => {
-        console.log(res);
-    }).catch(err => {
-        console.log(err);
-    });
+    await db.query(`UPDATE produto SET nome = '${produto.nome}', status = '${produto.status}', taxa_rentabilidade = ${produto.taxa_rentabilidade}, prazo = ${produto.prazo}, taxa_adm = ${produto.taxa_adm}, vencimento = '${produto.vencimento}', liquidez = ${produto.liquidez ? 'S' : 'N'} WHERE id = ${id};`)
+        .catch(err => {
+            throw new Error(`Ocorreu um erro ao atualizar o produto\n=> ${err.message}`);
+        });
 
 }
 
@@ -127,7 +135,7 @@ const mudar_status: (id: string, res: Response) => Promise<void> = async (id: st
 
     try {
         db.query(`
-            SELECT ALTERAR_STATUS(${id})
+            SELECT ALTERAR_STATUS('${id}')
         `)
         res.status(200).json({
             message: "Status alterado com sucesso!!"

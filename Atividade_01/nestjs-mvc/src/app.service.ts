@@ -1,24 +1,24 @@
-import { Body, Injectable, HttpStatus } from '@nestjs/common';
+import { Body, Injectable, HttpStatus, Res } from '@nestjs/common';
 import { ulid } from 'ulidx';
 import { Request, Response } from 'express';
-import { getProdutos, getProduto, addProduto, removeProduto, updateProduto } from './database'
+import { getProdutos, getProduto, addProduto, removeProduto, updateProduto, mudar_status } from './database'
 
 export enum Status {
   DISPONIVEL = 'D',
   INDISPONIVEL = 'I'
 }
-
-HttpStatus.CONTINUE
+export interface ProdutoBase {
+  nome: string,
+  taxa_rentabilidade: number,
+  prazo: number,
+  taxa_adm: number,
+  vencimento: Date,
+  liquidez: boolean
+}
 
 export interface Page {
   name: string,
   href: string
-}
-
-export class ProductBase {
-  constructor(
-    public nome: string
-  ) { }
 }
 
 export class Produto {
@@ -33,7 +33,6 @@ export class Produto {
 
   constructor(
     nome: string,
-    status: Status,
     taxa_rentabilidade: number,
     prazo: number,
     taxa_adm: number,
@@ -43,9 +42,6 @@ export class Produto {
 
     if (!nome || nome.length > 32) {
       throw new Error('Nome inválido');
-    }
-    if (!status) {
-      throw new Error('Status inválido');
     }
     if (!taxa_rentabilidade || taxa_rentabilidade < 0 || taxa_rentabilidade > 20) {
       throw new Error('Taxa de rentabilidade inválida');
@@ -63,7 +59,7 @@ export class Produto {
     }
 
     this._nome = nome;
-    this._status = status;
+    this._status = Status.DISPONIVEL;
     this._taxa_rentabilidade = taxa_rentabilidade;
     this._prazo = prazo;
     this._taxa_adm = taxa_adm;
@@ -206,17 +202,16 @@ export class AppService {
     })
   }
 
-  async getProdutosLab2(req: Request, res: Response): Promise<void> {
+  async getProdutosLab2(@Res() resp: Response): Promise<void> {
     await getProdutos().then((produtos: Produto[]) => {
-      res.status(HttpStatus.OK).json({
+      resp.status(HttpStatus.OK).json({
         message: "Lista de Produtos",
         produtos: produtos
       })
     }).catch((err) => {
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      resp.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         message: "Erro ao buscar produtos"
       })
-      console.log(err.message);
     });
   }
 
@@ -235,15 +230,7 @@ export class AppService {
     })
   }
 
-  async addProdutoLab2(body: {
-    nome: string,
-    status: Status,
-    taxa_rentabilidade: number,
-    prazo: number,
-    taxa_adm: number,
-    vencimento: Date,
-    liquidez: boolean
-  }, res: Response): Promise<void> {
+  async addProdutoLab2(body: ProdutoBase, res: Response): Promise<void> {
     Object.keys(body).forEach((key) => {
       if (body[key] == null) {
         res.status(HttpStatus.NOT_FOUND).json({
@@ -255,7 +242,6 @@ export class AppService {
 
     const produto = new Produto(
       body.nome,
-      body.status,
       body.taxa_rentabilidade,
       body.prazo,
       body.taxa_adm,
@@ -276,7 +262,7 @@ export class AppService {
     }
   }
 
-  async removerProdutoLab2(id: string, res: Response) {
+  async removeProdutoLab2(id: string, res: Response) {
     if (!id) {
       res.status(HttpStatus.BAD_REQUEST).json({
         message: "Id não informado."
@@ -297,22 +283,20 @@ export class AppService {
     }
   }
 
-  async atualizarProduto(
-    body: {
-      id: string,
-      nome: string,
-      status: Status,
-      taxa_rentabilidade: number,
-      prazo: number,
-      taxa_adm: number,
-      vencimento: Date,
-      liquidez: boolean
-    }, res: Response) {
+  async atualizarProduto(id: string, body: ProdutoBase, res: Response) {
     try {
-      const produto = await getProduto(body.id);
+      const produto: Produto = await getProduto(id);
+
+      if (!produto) {
+        res.status(HttpStatus.CREATED).json({
+          message: "Produto não encontrado, criando novo produto!"
+        });
+        this.addProdutoLab2(body, res);
+        return;
+      }
+
       const novo_produto = new Produto(
         body.nome ? body.nome : produto.nome,
-        body.status ? body.status : produto.status,
         body.taxa_rentabilidade ? body.taxa_rentabilidade : produto.taxa_rentabilidade,
         body.prazo ? body.prazo : produto.prazo,
         body.taxa_adm ? body.taxa_adm : produto.taxa_adm,
@@ -320,10 +304,21 @@ export class AppService {
         body.liquidez ? body.liquidez : produto.liquidez
       );
 
-      updateProduto(body.id, novo_produto);
+      updateProduto(id, novo_produto);
       res.status(HttpStatus.OK).json({
         message: "Produto atualizado com sucesso!"
       });
+    } catch (e) {
+      res.status(HttpStatus.NOT_FOUND).json({
+        message: "Produto não encontrado!!"
+      });
+      return;
+    }
+  }
+
+  async alterar_status_produto(id: string, res: Response) {
+    try {
+      mudar_status(id, res);
     } catch (e) {
       res.status(HttpStatus.NOT_FOUND).json({
         message: "Produto não encontrado!!"
@@ -482,12 +477,21 @@ export class AppService {
 
 
   addProduto(produto: {
-    nome: string, status: Status, taxa_rentabilidade: number, prazo: number, taxa_adm: number, vencimento: Date, liquidez: boolean
+    nome: string,
+    taxa_rentabilidade: number,
+    prazo: number,
+    taxa_adm: number,
+    vencimento: Date,
+    liquidez: string
   }): {
     status: number
   } {
-    console.log(produto);
-    const newProduto: Produto = new Produto(produto.nome, produto.status, produto.taxa_rentabilidade, produto.prazo, produto.taxa_adm, produto.vencimento, produto.liquidez);
+
+    const newProduto: Produto = new Produto(
+      produto.nome, produto.taxa_rentabilidade,
+      produto.prazo, produto.taxa_adm, produto.vencimento,
+      produto.liquidez === 'Sim'
+    );
     Produtos.push(newProduto);
 
     return { status: 201 }

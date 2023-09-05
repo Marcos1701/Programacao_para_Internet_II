@@ -1,13 +1,12 @@
-import { Get, Controller, Render, Module, Injectable, Query, Post, Body, Res, Req, Redirect, HttpStatus } from '@nestjs/common';
-import { AppService, Page, Status } from './app.service';
+import { Get, Controller, Render, Module, Injectable, Query, Post, Body, Res, Req, Redirect, HttpStatus, Delete, Patch, HttpCode } from '@nestjs/common';
+import { AppService, Page, ProdutoBase, Status } from './app.service';
 import { Request, Response } from 'express';
 import {
   ApiBody,
   ApiResponse,
-  ApiParam,
   ApiTags
-} from '@nestjs/swagger'
-import { error } from 'console';
+} from '@nestjs/swagger';
+
 
 @Controller()
 export class AppController {
@@ -16,10 +15,6 @@ export class AppController {
   @ApiTags('Home')
   @Get('/')
   @Render('index')
-  @ApiResponse({
-    status: 200,
-    description: "Operação ocorreu com sucesso"
-  })
   home() {
     return {
       anchors: [
@@ -59,12 +54,13 @@ export class AppController {
   @ApiTags('Lab 2')
   @Get('/lab2/produtos')
   @Render('lab2')
+  @HttpCode(HttpStatus.OK)
   @ApiResponse({
     status: 200,
     description: "Operação ocorreu com sucesso"
   })
-  produtosLab2(@Req() request: Request, @Res() response: Response) {
-    this.appService.getProdutosLab2(request, response);
+  produtosLab2(@Res() response: Response) {
+    this.appService.getProdutosLab2(response);
   }
 
   @ApiTags('Lab 2')
@@ -88,10 +84,99 @@ export class AppController {
     this.appService.getProdutoLab2(id, response);
   }
 
+  @ApiTags('Lab 2')
+  @Post('/lab2/produtos')
+  @Render('lab2')
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: "Operação ocorreu com sucesso, redirecionando para a pagina de listagem.."
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: "Ocorre quando algum dos valores enviados é inválido ou não foi informado"
+  })
+  @ApiBody({
+    required: true,
+    type: 'string',
+    schema: {
+      type: 'string',
+      properties: {
+        nome: {
+          type: 'string'
+        },
+        taxa_rentabilidade: {
+          type: 'number'
+        },
+        prazo: {
+          type: 'number'
+        },
+        taxa_adm: {
+          type: 'number'
+        },
+        vencimento: {
+          type: 'string'
+        },
+        liquidez: {
+          type: 'boolean'
+        }
+      }
+    }
+  })
+  CreateProdutoLab2(@Body() body: ProdutoBase, @Res() response: Response) {
+    this.appService.addProdutoLab2(body, response);
+  }
+
+  @ApiTags('Lab 2')
+  @Delete('/lab2/produtos/:id')
+  @Render('lab2')
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: "Operação ocorreu com sucesso, redirecionando para a pagina de listagem.."
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: "Ocorre quando o id é inválido ou não foi informado"
+  })
+  DeleteProdutoLab2(@Body('id') id: string, @Res() response: Response) {
+    this.appService.removeProdutoLab2(id, response);
+  }
+
+  @ApiTags('Lab 2')
+  @Patch('/lab2/produtos/:id')
+  @Render('lab2')
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: "Operação ocorreu com sucesso, redirecionando para a pagina de listagem.."
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: "Ocorre quando o id é inválido ou não foi informado"
+  })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: "Ocorre quando o produto não foi encontrado e um novo foi criado"
+  })
+  UpdateProdutoLab2(@Body('id') id: string, @Body() body: ProdutoBase, @Res() response: Response) {
+    this.appService.atualizarProduto(id, body, response);
+  }
+
+  @ApiTags('Lab 2')
+  @Patch('/lab2/produtos/:id/mudar-status')
+  @Render('lab2')
+  @ApiResponse({
+    status: 200,
+    description: "Operação ocorreu com sucesso, redirecionando para a pagina de listagem.."
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: "Ocorre quando o id é inválido ou não foi informado"
+  })
+  MudarStatusProdutoLab2(@Body('id') id: string, @Res() response: Response) {
+    this.appService.alterar_status_produto(id, response);
+  }
 
 
   // Laboratório 1
-
   @ApiTags('Lab 1')
   @Get('/lab1')
   @Render('lab1')
@@ -218,7 +303,14 @@ export class AppController {
     }
   })
   produto_adicionar(
-    @Body() body: { nome: string, status: Status, taxa_rentabilidade: number, prazo: number, taxa_adm: number, vencimento: Date, liquidez: boolean }
+    @Body() body: {
+      nome: string,
+      taxa_rentabilidade: number,
+      prazo: number,
+      taxa_adm: number,
+      vencimento: Date,
+      liquidez: string
+    }
   ): void {
     this.appService.addProduto(body);
   }

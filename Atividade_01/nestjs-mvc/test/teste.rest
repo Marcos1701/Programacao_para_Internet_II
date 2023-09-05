@@ -1,0 +1,1 @@
+GET http://localhost/lab2/produtos HTTP/1.1
