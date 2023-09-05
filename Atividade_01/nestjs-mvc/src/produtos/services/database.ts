@@ -1,5 +1,5 @@
-import { Client, QueryResult } from 'pg'
-import { Produto } from './app.service';
+import { Client } from 'pg'
+import { Produto } from '../entities/produto.entity';
 import { Response } from 'express';
 
 const db = new Client({
@@ -53,8 +53,8 @@ const db = new Client({
     });
 })();
 
-async function getProdutos(): Promise<Produto[]> {
-    const res: QueryResult<any> = await db.query('SELECT * FROM produto;');
+async function getProdutos() {
+    const res = await db.query('SELECT * FROM produto;');
     const produtos: Produto[] = [];
     for (const row of res.rows) {
         produtos.push(new Produto(

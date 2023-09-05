@@ -2,12 +2,12 @@ import { ApiProperty } from "@nestjs/swagger";
 import { ulid } from "ulidx";
 
 export enum Status {
-    DISPONIVEL = 'D',
-    INDISPONIVEL = 'I'
+  DISPONIVEL = 'D',
+  INDISPONIVEL = 'I'
 }
 
 export class Produto {
-  
+
   @ApiProperty()
   private _id: string = ulid()
 
@@ -37,7 +37,7 @@ export class Produto {
 
   constructor(
     nome: string,
-    destinacao:string,
+    destinacao: string,
     taxa_rentabilidade: number,
     prazo: number,
     taxa_adm: number,
@@ -48,8 +48,8 @@ export class Produto {
     if (!nome || nome.length > 32) {
       throw new Error('Nome inválido');
     }
-    if(!destinacao){
-        throw new Error('Destinação inválida');
+    if (!destinacao) {
+      throw new Error('Destinação inválida');
     }
     if (!taxa_rentabilidade || taxa_rentabilidade < 0 || taxa_rentabilidade > 20) {
       throw new Error('Taxa de rentabilidade inválida');
@@ -76,7 +76,7 @@ export class Produto {
     this._liquidez = liquidez;
   }
 
-  get id(): string{
+  get id(): string {
     return this._id
   }
 
@@ -84,7 +84,7 @@ export class Produto {
     return this._nome;
   }
 
-  get destinacao(): string{
+  get destinacao(): string {
     return this._destinacao
   }
 
