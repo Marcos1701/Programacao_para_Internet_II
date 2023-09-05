@@ -42,7 +42,6 @@ export class AppController {
 
   @ApiTags('Lab 2')
   @Get('/lab2')
-  @Render('lab2')
   @ApiResponse({
     status: 200,
     description: "Operação ocorreu com sucesso"
@@ -53,7 +52,6 @@ export class AppController {
 
   @ApiTags('Lab 2')
   @Get('/lab2/produtos')
-  @Render('lab2')
   @HttpCode(HttpStatus.OK)
   @ApiResponse({
     status: 200,
@@ -65,7 +63,6 @@ export class AppController {
 
   @ApiTags('Lab 2')
   @Get('/lab2/produtos/:id')
-  @Render('lab2')
   @ApiResponse({
     status: 200,
     description: "Operação ocorreu com sucesso"
@@ -86,7 +83,6 @@ export class AppController {
 
   @ApiTags('Lab 2')
   @Post('/lab2/produtos')
-  @Render('lab2')
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: "Operação ocorreu com sucesso, redirecionando para a pagina de listagem.."
@@ -128,7 +124,6 @@ export class AppController {
 
   @ApiTags('Lab 2')
   @Delete('/lab2/produtos/:id')
-  @Render('lab2')
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
     description: "Operação ocorreu com sucesso, redirecionando para a pagina de listagem.."
@@ -143,7 +138,6 @@ export class AppController {
 
   @ApiTags('Lab 2')
   @Patch('/lab2/produtos/:id')
-  @Render('lab2')
   @ApiResponse({
     status: HttpStatus.OK,
     description: "Operação ocorreu com sucesso, redirecionando para a pagina de listagem.."
@@ -162,7 +156,6 @@ export class AppController {
 
   @ApiTags('Lab 2')
   @Patch('/lab2/produtos/:id/mudar-status')
-  @Render('lab2')
   @ApiResponse({
     status: 200,
     description: "Operação ocorreu com sucesso, redirecionando para a pagina de listagem.."
