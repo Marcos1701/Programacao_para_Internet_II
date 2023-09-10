@@ -6,8 +6,8 @@ RUN npm install --only=development
 
 COPY . .
 
-EXPOSE 3000
+EXPOSE 8080
 
 RUN npm run build
 
-CMD killall node && npm run start:prod
+CMD npm run start:prod
