@@ -15,8 +15,11 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+    it('should return message', () => {
+      expect(appController.getMessage()).toBe(
+        `<h1>Seja Bem vindo á api de rinha de back-end!</h1> 
+      <p>Para acessar a documentação da api, acesse: <a href="http://localhost:3000/docs/">docs</a></p>
+      `);
     });
   });
 });

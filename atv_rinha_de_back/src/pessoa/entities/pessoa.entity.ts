@@ -2,14 +2,23 @@ import {
     BadRequestException,
     UnprocessableEntityException
 } from '@nestjs/common'
-import { parse } from 'path';
+import { ApiProperty } from '@nestjs/swagger';
 import { ulid } from 'ulidx';
 
 export class Pessoa {
+    @ApiProperty()
     id: string;
+
+    @ApiProperty()
     apelido: string;
+
+    @ApiProperty()
     nome: string;
+
+    @ApiProperty()
     nascimento: string; // formato: 'YYYY-MM-DD'
+
+    @ApiProperty()
     stack: string[] = [];
 
     constructor(apelido: string, nome: string, nascimento: string, stack?: string[], id?: string) {
