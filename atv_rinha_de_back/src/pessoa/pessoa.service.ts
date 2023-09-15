@@ -1,26 +1,34 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePessoaDto } from './dto/create-pessoa.dto';
-import { UpdatePessoaDto } from './dto/update-pessoa.dto';
+import { CreatePessoaDto, CreatePessoaInterface } from './dto/create-pessoa.dto';
+import { SearchPessoaDto } from './dto/search-pessoa.dto';
+import { GetPessoasDto } from './dto/get-pessoa.dto';
 
 @Injectable()
 export class PessoaService {
-  create(createPessoaDto: CreatePessoaDto) {
-    return 'This action adds a new pessoa';
+
+  constructor(
+    private readonly getPessoasDto: GetPessoasDto,
+    private readonly createPessoaDto: CreatePessoaDto,
+    private readonly searchPessoaDto: SearchPessoaDto
+  ) { }
+
+  async create({ apelido, nome, nascimento, stack }: CreatePessoaInterface) {
+    return await this.createPessoaDto.create(apelido, nome, nascimento, stack);
   }
 
-  findAll() {
-    return `This action returns all pessoa`;
+  async findAll() {
+    return await this.getPessoasDto.getPessoas();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} pessoa`;
+  async findOne(id: string) {
+    return await this.getPessoasDto.getPessoa(id);
   }
 
-  update(id: number, updatePessoaDto: UpdatePessoaDto) {
-    return `This action updates a #${id} pessoa`;
+  async search(termo: string) {
+    return await this.searchPessoaDto.search(termo);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} pessoa`;
+  async getContagem(): Promise<number> {
+    return await this.getPessoasDto.getContagem()
   }
 }

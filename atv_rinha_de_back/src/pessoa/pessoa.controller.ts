@@ -1,34 +1,33 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { PessoaService } from './pessoa.service';
-import { CreatePessoaDto } from './dto/create-pessoa.dto';
-import { UpdatePessoaDto } from './dto/update-pessoa.dto';
+import { CreatePessoaDto, CreatePessoaInterface } from './dto/create-pessoa.dto';
 
-@Controller('pessoa')
+@Controller('')
 export class PessoaController {
-  constructor(private readonly pessoaService: PessoaService) {}
+  constructor(private readonly pessoaService: PessoaService) { }
 
-  @Post()
-  create(@Body() createPessoaDto: CreatePessoaDto) {
+  @Post("pessoas")
+  create(@Body() createPessoaDto: CreatePessoaInterface) {
     return this.pessoaService.create(createPessoaDto);
   }
 
-  @Get()
+  @Get("pessoas")
   findAll() {
     return this.pessoaService.findAll();
   }
 
-  @Get(':id')
+  @Get('pessoas/:id')
   findOne(@Param('id') id: string) {
-    return this.pessoaService.findOne(+id);
+    return this.pessoaService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePessoaDto: UpdatePessoaDto) {
-    return this.pessoaService.update(+id, updatePessoaDto);
+  @Get("pessoas?t=:termo")
+  search(@Param('termo') termo: string) {
+    return this.pessoaService.search(termo);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.pessoaService.remove(+id);
+  @Get("contagem-pessoas")
+  getContagem() {
+    return this.pessoaService.getContagem();
   }
 }
