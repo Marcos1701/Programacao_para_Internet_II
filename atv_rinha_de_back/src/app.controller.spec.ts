@@ -18,7 +18,7 @@ describe('AppController', () => {
     it('should return message', () => {
       expect(appController.getMessage()).toBe(
         `<h1>Seja Bem vindo á api de rinha de back-end!</h1> 
-      <p>Para acessar a documentação da api, acesse: <a href="http://localhost:3000/docs/">docs</a></p>
+      <p>Para acessar a documentação da api, acesse: <a href="./docs/">docs</a></p>
       `);
     });
   });
