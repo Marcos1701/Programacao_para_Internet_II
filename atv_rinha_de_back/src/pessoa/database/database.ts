@@ -104,7 +104,7 @@ const inicialize = async () => {
         $$ language 'plpgsql';
     `);
 
-        await db.end().catch((err) => console.log(err));
+        // await db.end().catch((err) => console.log(err));
     } catch (err) {
         console.log(`Ocorreu um erro ao inicializar o banco de dados:\n - ${err.message}`);
     }
