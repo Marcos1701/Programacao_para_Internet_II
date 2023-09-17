@@ -3,3 +3,5 @@ DB_HOST=db.geuuwefthgffmgbxfacf.supabase.co
 DB_NAME=postgres
 DB_PORT=5432
 DB_USER=postgres
+SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdldXV3ZWZ0aGdmZm1nYnhmYWNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTQ2NTE2NjMsImV4cCI6MjAxMDIyNzY2M30.FNck4CiyIGs5PNNjKAY8yClbACB_ejVPz_uYWdV6yX4
+SUPABASE_URL=https://geuuwefthgffmgbxfacf.supabase.co

@@ -1,5 +1,8 @@
 import { Client } from 'pg'
 import * as dotenv from 'dotenv';
+import { createClient } from '@supabase/supabase-js';
+import { Database } from './database.types';
+import { Pessoa } from '../entities/pessoa.entity';
 dotenv.config({ path: '.enc.local' });
 
 // dotenv está sendo utilizado para ocultar as informações de conexão com o banco de dados.
@@ -109,3 +112,109 @@ const inicialize = async () => {
 inicialize();
 
 export default db;
+
+
+// Versão com Supabase (usando o typeORM)
+// const supabase = createClient<Database>(
+//     process.env.SUPABASE_URL,
+//     process.env.SUPABASE_KEY,
+//     {
+//         auth: {
+//             persistSession: false
+//         }
+//     }
+// );
+
+// const getAllPessoas = async () => {
+//     const { data, error } = await supabase
+//         .from('pessoa')
+//         .select('*');
+
+//     if (error) {
+//         throw new Error(error.message);
+//     }
+
+//     console.log(data);
+// }
+
+// const insertPessoa = async (pessoa: Pessoa): Promise<Pessoa> => {
+//     const { error } = await supabase
+//         .from('pessoa')
+//         .insert([
+//             {
+//                 id: pessoa.id,
+//                 apelido: pessoa.apelido,
+//                 nome: pessoa.nome,
+//                 nascimento: pessoa.nascimento
+//             }
+//         ]);
+
+//     if (error) {
+//         throw new Error(error.message);
+//     }
+
+//     const { data, error: errorStack } = await supabase
+//         .from('stack')
+//         .insert(pessoa.stack.map((item: string) => {
+//             return {
+//                 id_pessoa: pessoa.id,
+//                 stack: item
+//             }
+//         }));
+
+//     if (errorStack) {
+//         throw new Error(errorStack.message);
+//     }
+//     return pessoa;
+// }
+
+// const deletePessoa = async (id_pessoa: string) => {
+//     const { data, error } = await supabase
+//         .from('pessoa')
+//         .delete()
+//         .match({ id: id_pessoa });
+
+//     if (error) {
+//         throw new Error(error.message);
+//     }
+// }
+
+// const getPessoa = async (id_pessoa: string) => {
+//     const { data, error } = await supabase
+//         .from('pessoa')
+//         .select('*')
+//         .match({ id: id_pessoa });
+
+//     if (error) {
+//         throw new Error(error.message);
+//     }
+
+//     return data;
+// }
+
+// const get_contagem = async () => {
+//     const { data, error } = await supabase
+//         .from('pessoa')
+//         .select('apelido');
+
+//     if (error) {
+//         throw new Error(error.message);
+//     }
+
+//     return data.length;
+// }
+
+// const get_stack = async (id_pessoa: string) => {
+//     const { data, error } = await supabase
+//         .rpc('get_stack', { id: id_pessoa });
+
+//     //rpc -> remote procedure call
+//     //  em resumo, é uma chamada de função remota
+
+//     if (error) {
+//         throw new Error(error.message);
+//     }
+
+//     return data;
+// }
+//...
