@@ -1,19 +1,16 @@
 import { Client } from 'pg'
-// import * as dotenv from 'dotenv';
-// dotenv.config({ path: '.enc.local' });
+import * as dotenv from 'dotenv';
+dotenv.config({ path: '.enc.local' });
 
-
-// console.log(process.env.DB_HOST);
-// console.log(process.env.DB_PORT);
-// console.log(process.env.DB_USER);
-// console.log(process.env.DB_NAME);
+// dotenv está sendo utilizado para ocultar as informações de conexão com o banco de dados.
+// isso é apenas uma maneira de ocultar essas informaçoes "secretas"..
 
 const db = new Client({
-    host: "db.geuuwefthgffmgbxfacf.supabase.co", //process.env.DB_HOST,
-    port: 5432, // parseInt(process.env.DB_PORT),
-    user: "postgres", //process.env.DB_USER,
-    database: "postgres", //process.env.DB_NAME,
-    password: "BprVyZeOIb0bU5eD" //process.env.DB_PASSWORD
+    host: process.env.DB_HOST,
+    port: parseInt(process.env.DB_PORT),
+    user: process.env.DB_USER,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD
 })
 
 
@@ -104,7 +101,6 @@ const inicialize = async () => {
         $$ language 'plpgsql';
     `);
 
-        // await db.end().catch((err) => console.log(err));
     } catch (err) {
         console.log(`Ocorreu um erro ao inicializar o banco de dados:\n - ${err.message}`);
     }
