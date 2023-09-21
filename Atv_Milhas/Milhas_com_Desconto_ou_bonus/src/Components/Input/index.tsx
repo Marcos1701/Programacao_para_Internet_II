@@ -3,7 +3,7 @@ import React from 'react'
 interface InputProps {
     Initialvalue?: string | number | readonly string[] | undefined
     placeholder?: string
-    onClick?: () => void
+    onChange?: (value: number, func: Function) => void
     disabled?: boolean
     type?: "text" | "password" | "email" | "number" | "date"
     className?: string
@@ -15,12 +15,12 @@ interface InputProps {
 
 
 const Input = (
-    { Initialvalue: Initialtext, placeholder, onClick, disabled, type, className, id, style, min = 0, max }: InputProps
+    { Initialvalue: Initialtext, placeholder, onChange, disabled, type, className, id, style, min = 0, max }: InputProps
 ) => {
     return (
         <input
             placeholder={placeholder ? placeholder : "Digite aqui"}
-            onClick={onClick}
+            onChange={onChange}
             disabled={disabled ? disabled : false}
             type={type ? type : "text"}
             className={className ? className : ""}
