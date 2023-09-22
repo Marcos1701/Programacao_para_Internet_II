@@ -3,7 +3,7 @@ import React from 'react'
 interface InputProps {
     Initialvalue?: string | number | readonly string[] | undefined
     placeholder?: string
-    onChange?: (value: number, func: Function) => void
+    onChange?: React.ChangeEventHandler<HTMLInputElement>
     disabled?: boolean
     type?: "text" | "password" | "email" | "number" | "date"
     className?: string
