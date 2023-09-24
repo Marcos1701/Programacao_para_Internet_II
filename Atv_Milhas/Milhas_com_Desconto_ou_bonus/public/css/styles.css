@@ -1,0 +1,101 @@
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+button {
+    background-color: rgb(137, 43, 224);
+    border-radius: 8px;
+    border: 2px solid transparent;
+    font-family: inherit;
+    cursor: pointer;
+    transition: border-color 0.25s;
+    font-size: 1.3rem;
+    padding: 15px 70px;
+}
+
+button:hover {
+    border-color: #00eeff;
+}
+
+button:focus,
+button:focus-visible {
+    outline: 4px auto -webkit-focus-ring-color;
+}
+
+button.mil_milhas {
+    padding: 9px 13px;
+    border-radius: 12px;
+    font-size: 1rem;
+    margin: 10px 0;
+    width: 70px;
+}
+
+button.mil_milhas:hover {
+    background-color: rgb(137, 43, 224, 0.8);
+}
+
+button.dez_mil_milhas {
+    padding: 10px 20px;
+    border-radius: 15px;
+    font-size: 1.2rem;
+    margin: 10px 0;
+    width: 100px;
+}
+
+div.milhas_inputs {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+input {
+    padding: 6px 10px;
+    border-radius: 5px;
+    border: 1px solid rgb(137, 43, 224);
+    font-size: 1rem;
+}
+
+input.milhas_input {
+    width: 150px;
+}
+
+.Resultado {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    background-color: #ffffff3a;
+    padding: 10px 20px;
+}
+
+.retorno_visual {
+    background-color: #fff;
+    padding: 0 10px;
+    border-radius: 10px;
+    margin-top: 25px;
+}
+
+.retorno_visual p.pessimo {
+    color: red;
+}
+
+.retorno_visual p.mediano {
+    color: orange;
+}
+
+.retorno_visual p.regular {
+    color: yellow;
+}
+
+.retorno_visual p.otimo {
+    color: green;
+}

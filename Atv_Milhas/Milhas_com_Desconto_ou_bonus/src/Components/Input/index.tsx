@@ -25,17 +25,7 @@ const Input = (
             type={type ? type : "text"}
             className={className ? className : ""}
             id={id}
-            style={style ? style : {
-                backgroundColor: "#FFF",
-                color: "#000",
-                padding: "10px",
-                borderRadius: "5px",
-                border: "none",
-                cursor: "pointer",
-                fontSize: "16px",
-                fontWeight: "bold",
-                width: "100%"
-            }}
+            style={style}
             value={Initialtext ? Initialtext : ""}
             min={type === "number" ? min : undefined}
             max={type === "number" ? max : undefined}
