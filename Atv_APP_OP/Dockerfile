@@ -1,13 +1,21 @@
-FROM node:lts-alpine
+FROM mhart/alpine-node:12 AS builder
 
-COPY package.json ./
-
-RUN yarn 
+WORKDIR /app
 
 COPY . .
 
-EXPOSE 3000
+RUN yarn install
 
-RUN yarn build
+RUN yarn run build
 
-CMD ["yarn", "dev"]
+FROM nginx:1.16.0-alpine
+
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+RUN rm /etc/nginx/conf.d/default.conf
+
+COPY deploy/nginx/nginx.conf /etc/nginx/conf.d
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
