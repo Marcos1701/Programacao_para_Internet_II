@@ -2,11 +2,11 @@ FROM node:lts-alpine
 
 COPY package.json ./
 
-RUN npm install --only=development
+RUN yarn 
 
 COPY . .
 
-EXPOSE 8080
+EXPOSE 5173
 
 RUN yarn build
 
