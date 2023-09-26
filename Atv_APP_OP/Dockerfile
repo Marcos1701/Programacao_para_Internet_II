@@ -6,8 +6,8 @@ RUN yarn
 
 COPY . .
 
-EXPOSE 5173
+EXPOSE 3000
 
 RUN yarn build
 
-CMD yarn dev
+CMD ["yarn", "dev"]
