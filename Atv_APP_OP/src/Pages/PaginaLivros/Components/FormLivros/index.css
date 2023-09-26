@@ -1,0 +1,23 @@
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1.4px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px #ccc;
+}
+
+div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+h2 {
+    text-align: center;
+    font-size: 2em;
+}
