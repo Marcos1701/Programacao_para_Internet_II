@@ -1,5 +1,6 @@
 import { RefObject, useRef, useState } from "react";
 import { Usuario } from "..";
+import { ulid } from "ulid";
 
 interface CadastroProps {
     realizarCadastro: (usuario: Usuario) => void
@@ -26,6 +27,7 @@ export function Cadastro({ realizarCadastro, usuarios }: CadastroProps) {
             return;
         }
         realizarCadastro({
+            id: ulid(),
             nome: nome.current?.value,
             senha: senha.current?.value,
             cidade: cidade.current?.value,

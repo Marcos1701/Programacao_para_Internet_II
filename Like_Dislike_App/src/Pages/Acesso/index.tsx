@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { IAutor } from "../TopicosPage";
+import { useState } from "react";
 import { Cadastro } from "./Cadastro";
 import { Login } from "./Login";
 
 interface AcessoProps {
-    setusuario: (usuario: IAutor) => void
+    setusuario: (usuario: Usuario) => void
 }
 
 export interface Usuario {
+    id: string
     nome: string
     senha: string
     cidade: string
@@ -24,6 +24,7 @@ export function Acesso({ setusuario }: AcessoProps) {
 
     return (
         <>
+            <h2>Selecione uma opção</h2>
             <button onClick={() => <Cadastro realizarCadastro={realizarCadastro} usuarios={usuarios} />}>Cadastrar</button>
             <button onClick={() => <Login usuarios={usuarios} setusuario={setusuario} />}>Logar</button>
         </>

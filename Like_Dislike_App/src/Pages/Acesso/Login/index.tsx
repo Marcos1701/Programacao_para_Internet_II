@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { Usuario } from "..";
-import { IAutor } from "../../TopicosPage";
 
 interface LoginProps {
     usuarios: Usuario[]
-    setusuario: (usuario: IAutor) => void
+    setusuario: (usuario: Usuario) => void
 }
 
 export function Login({ usuarios, setusuario }: LoginProps) {

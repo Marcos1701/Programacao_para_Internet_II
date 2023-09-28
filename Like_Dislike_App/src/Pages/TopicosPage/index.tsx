@@ -1,10 +1,12 @@
 import React from "react";
 import { ListTopicos } from "./Components/ListTopicos";
-import { Acesso } from "../Acesso";
+import { Acesso, Usuario } from "../Acesso";
+import { Header } from "./Components/Header";
 
 //Tópico(id:uuid | int, descricao: string, autor:Autor[nome, cidade, pais], created_at:date, tags:string[], active:bool)
 
 export interface IAutor {
+    id: string
     nome: string
     cidade: string
     pais: string
@@ -31,10 +33,14 @@ export interface ITopico {
     votos: IVoto[]
 }
 
+interface TopicosPageProps {
+    current_user: IAutor
+    setCurrentUser: (usuario: Usuario | null) => void
+}
 
-export function TopicosPage() {
+
+export function TopicosPage({ current_user, setCurrentUser }: TopicosPageProps) {
     const [Topicos, setTopicos] = React.useState<ITopico[]>([])
-    const [current_user, setCurrentUser] = React.useState<IAutor>()
     const [Votos, setVotos] = React.useState<IVoto[]>([])
 
     const Like = (id: string) => {
@@ -47,7 +53,7 @@ export function TopicosPage() {
             setVotos(Votos.map(voto => voto.topico_id === id && voto.autor.nome === current_user?.nome ? { ...voto, tipo: Voto.UP } : voto))
             return;
         }
-        setVotos([...Votos, { id: id, autor: current_user!, topico_id: id, tipo: Voto.UP }])
+        setVotos([...Votos, { id: id, autor: current_user, topico_id: id, tipo: Voto.UP }])
     }
 
     const Dislike = (id: string) => {
@@ -66,11 +72,8 @@ export function TopicosPage() {
 
     return (
         <>
-            {
-                current_user ?
-                    <ListTopicos Topicos={Topicos} current_user={current_user} Like={Like} Dislike={Dislike} /> :
-                    <Acesso setusuario={setCurrentUser} />
-            }
+            <Header setusuario={setCurrentUser} />
+            <ListTopicos Topicos={Topicos} current_user={current_user} Like={Like} Dislike={Dislike} />
         </>
     )
 }
