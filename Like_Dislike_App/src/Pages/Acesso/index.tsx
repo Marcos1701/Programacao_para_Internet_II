@@ -6,6 +6,12 @@ interface AcessoProps {
     setusuario: (usuario: Usuario) => void
 }
 
+enum operacao {
+    nenhuma,
+    Cadastro,
+    Login
+}
+
 export interface Usuario {
     id: string
     nome: string
@@ -22,11 +28,21 @@ export function Acesso({ setusuario }: AcessoProps) {
         setusuario(usuario);
     }
 
+    let [tipoOperacao, setTipoOperacao] = useState<operacao>(operacao.nenhuma)
+
+
     return (
         <>
+            { !tipoOperacao && <> 
             <h2>Selecione uma opção</h2>
-            <button onClick={() => <Cadastro realizarCadastro={realizarCadastro} usuarios={usuarios} />}>Cadastrar</button>
-            <button onClick={() => <Login usuarios={usuarios} setusuario={setusuario} />}>Logar</button>
+            <button onClick={() => setTipoOperacao(operacao.Cadastro)}>Realizar Cadastro</button>
+            <button onClick={() => setTipoOperacao(operacao.Login)}>Realizar Login</button>
+            </>
+            }
+
+            {tipoOperacao == operacao.Cadastro && <Cadastro realizarCadastro={realizarCadastro} usuarios={usuarios} key='sla' /> }
+            {tipoOperacao == operacao.Login && <Login usuarios={usuarios} setusuario={setusuario} key = 'sla'/> }
+
         </>
     )
 }
