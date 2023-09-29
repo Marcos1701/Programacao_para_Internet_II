@@ -1,6 +1,6 @@
 import React from "react";
 import { ListTopicos } from "./Components/ListTopicos";
-import { Acesso, Usuario } from "../Acesso";
+import { ulid } from "ulid";
 import { Header } from "./Components/Header";
 
 //Tópico(id:uuid | int, descricao: string, autor:Autor[nome, cidade, pais], created_at:date, tags:string[], active:bool)
@@ -18,7 +18,6 @@ export enum Voto {
 
 export interface IVoto {
     id: string
-    autor: IAutor
     topico_id: string
     tipo: Voto
 }
@@ -33,47 +32,49 @@ export interface ITopico {
     votos: IVoto[]
 }
 
-interface TopicosPageProps {
-    current_user: IAutor
-    setCurrentUser: (usuario: Usuario | null) => void
-}
 
-
-export function TopicosPage({ current_user, setCurrentUser }: TopicosPageProps) {
+export function TopicosPage() {
     const [Topicos, setTopicos] = React.useState<ITopico[]>([])
-    const [Votos, setVotos] = React.useState<IVoto[]>([])
 
     const Like = (id: string) => {
-        const voto = Votos.find(voto => voto.topico_id === id && voto.autor.nome === current_user?.nome)
-        if (voto) {
-            if (voto.tipo === Voto.UP) {
-                setVotos(Votos.filter(voto => voto.topico_id !== id && voto.autor.nome !== current_user?.nome))
-                return;
+        setTopicos(Topicos.map(topico => {
+            if (topico.id === id) {
+                topico.votos.push({ id: ulid(), topico_id: id, tipo: Voto.UP })
             }
-            setVotos(Votos.map(voto => voto.topico_id === id && voto.autor.nome === current_user?.nome ? { ...voto, tipo: Voto.UP } : voto))
-            return;
-        }
-        setVotos([...Votos, { id: id, autor: current_user, topico_id: id, tipo: Voto.UP }])
+            return topico
+        }))
     }
 
     const Dislike = (id: string) => {
-        const voto = Votos.find(voto => voto.topico_id === id && voto.autor.nome === current_user?.nome)
-        if (voto) {
-            if (voto.tipo === Voto.DOWN) {
-                setVotos(Votos.filter(voto => voto.topico_id !== id && voto.autor.nome !== current_user?.nome))
-                return;
+        setTopicos(Topicos.map(topico => {
+            if (topico.id === id) {
+                topico.votos.push({ id: ulid(), topico_id: id, tipo: Voto.DOWN })
             }
-            setVotos(Votos.map(voto => voto.topico_id === id && voto.autor.nome === current_user?.nome ? { ...voto, tipo: Voto.DOWN } : voto))
-            return;
-        }
-        setVotos([...Votos, { id: id, autor: current_user!, topico_id: id, tipo: Voto.DOWN }])
+            return topico
+        }))
     }
 
+    const AddTopico = (descricao: string, nomeAutor: string, cidade: string, pais: string) => {
+        setTopicos([...Topicos, {
+            id: ulid(),
+            descricao: descricao,
+            autor: {
+                id: ulid(),
+                nome: nomeAutor,
+                cidade: cidade,
+                pais: pais
+            },
+            created_at: new Date(),
+            tags: [],
+            active: true,
+            votos: []
+        }])
+    }
 
     return (
         <>
-            <Header setusuario={setCurrentUser} />
-            <ListTopicos Topicos={Topicos} current_user={current_user} Like={Like} Dislike={Dislike} />
+            <Header addTopico={AddTopico} />
+            <ListTopicos Topicos={Topicos} Like={Like} Dislike={Dislike} />
         </>
     )
 }

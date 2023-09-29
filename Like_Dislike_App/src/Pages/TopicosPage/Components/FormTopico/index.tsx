@@ -1,25 +1,51 @@
-import { useRef } from "react"
+import { useRef, useState } from "react"
+import './index.css'
 
-interface FormTopicosProps{
-    AddElement: () => void
+interface FormTopicosProps {
+    AddElement: (descricao: string, nomeAutor: string, cidade: string, pais: string) => void
 }
 //(id:uuid | int, descricao: string, autor:Autor[nome, cidade, pais]
 
-export function FormTopicos({AddElement}: FormTopicosProps){
+export function FormTopicos({ AddElement }: FormTopicosProps) {
 
-    const descricao: React.RefObject<HTMLInputElement>= useRef<HTMLInputElement>(null);
+    const descricao: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+    const nomeAutor: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+    const cidade: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+    const pais: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+
+    const [error, setError] = useState<boolean>(false)
+    const [errorMessage, setErrorMessage] = useState<string>('')
 
     const onSubmit: React.FormEventHandler<HTMLFormElement> = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        AddElement()
 
+        if (descricao.current?.value && nomeAutor.current?.value && cidade.current?.value && pais.current?.value) {
+            AddElement(descricao.current.value, nomeAutor.current.value, cidade.current.value, pais.current.value)
+            const form = event.target as HTMLFormElement
+            form.reset()
+            setError(false)
+            setErrorMessage('')
+            return;
+        }
+
+        setError(true)
+        setErrorMessage('Preencha todos os campos!!')
     }
 
     return (
-        <form onSubmit={onSubmit}>
-            <input type="text" placeholder="Digite a Descrição do Tópico" ref={descricao}/>
+        <form onSubmit={onSubmit} id="formTopicos">
 
-            <button type="submit">Adicionar</button>
+            <h2>Adicionar Tópico</h2>
+            {error && <p>{errorMessage}</p>}
+            <input type="text" placeholder="Digite a Descrição do Tópico" ref={descricao} />
+            <input type="text" placeholder="Digite o nome do Autor" ref={nomeAutor} />
+            <input type="text" placeholder="Digite a cidade do Autor" ref={cidade} />
+            <input type="text" placeholder="Digite o país do Autor" ref={pais} />
+
+            <div className="botoes">
+                <button type="submit">Adicionar</button>
+                <button type="reset">Limpar</button>
+            </div>
         </form>
     )
 }
