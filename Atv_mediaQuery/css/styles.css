@@ -243,3 +243,75 @@ section#conteudo iframe {
         height: 50vh;
     }
 }
+
+
+/* 450 */
+@media screen and (max-width: 450px) {
+    .container {
+        flex-direction: column;
+    }
+
+    nav#menu {
+        order: 1;
+        width: 100%;
+        height: 10vh;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 1em;
+        margin: 0;
+        gap: 0;
+    }
+
+    nav#menu #acoes ul {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        gap: 1em;
+    }
+
+    nav#menu :is(.user .dadosPessoa, #acoes li a) {
+        display: none;
+    }
+
+    nav#menu :is(.user,
+        #acoes li) {
+        border: none;
+        padding: 0;
+        margin: 0;
+        gap: 0;
+        width: auto;
+    }
+
+    nav#menu :is(.user img,
+        #acoes img) {
+        width: 35px;
+        height: 35px;
+        padding: 1.4vw;
+        margin: 0;
+    }
+
+    nav#menu #btnSair {
+        width: 25%;
+        height: 35px;
+        font-size: 1em;
+        margin-left: auto;
+    }
+
+    main {
+        width: 100%;
+        height: 89vh;
+    }
+
+    section#conteudo h1 {
+        font-size: 7vw;
+        margin-bottom: 5vh;
+    }
+
+    section#conteudo iframe {
+        width: 90vw;
+        height: 45vh;
+    }
+}
