@@ -175,3 +175,71 @@ section#conteudo iframe {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.418);
     animation: Animation_opacity 1s;
 }
+
+
+/* 950 */
+
+@media screen and (max-width: 950px) {
+    nav#menu {
+        width: 16em;
+        justify-content: flex-start;
+    }
+
+    nav#menu .user,
+    nav#menu #acoes li {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    nav#menu .user img,
+    nav#menu #acoes img {
+        width: 40px;
+        height: 40px;
+        padding: 1vw;
+        margin: 0;
+    }
+
+    nav#menu .user p#nomePessoa {
+        font-size: .8em;
+    }
+
+    nav#menu .user p#emailPessoa {
+        font-size: .7em;
+    }
+
+    nav#menu #acoes {
+        align-self: center;
+    }
+
+    nav#menu #acoes li {
+        gap: 10px;
+        margin: 10px 0;
+        margin-bottom: 4vh;
+        padding-bottom: 1vh;
+    }
+
+    nav#menu #acoes li a {
+        font-size: 1rem;
+    }
+
+    nav#menu #btnSair {
+        width: 65%;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    main {
+        width: 100%;
+    }
+
+    section#conteudo h1 {
+        font-size: 1.3em;
+        margin-bottom: 5vh;
+    }
+
+    section#conteudo iframe {
+        width: 50vw;
+        height: 50vh;
+    }
+}
