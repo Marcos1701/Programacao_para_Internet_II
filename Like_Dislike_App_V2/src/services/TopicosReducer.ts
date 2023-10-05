@@ -1,5 +1,4 @@
 import { ITopico } from "../Pages/TopicosPage";
-import { CreateTopico, UpdateTopico } from "./TopicosServise";
 
 export interface TopicoState {
     topicos: ITopico[]
