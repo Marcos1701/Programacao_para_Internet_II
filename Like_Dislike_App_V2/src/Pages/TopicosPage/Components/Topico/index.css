@@ -353,7 +353,7 @@ li .retornoVisual .dislike * {
     li {
         flex-direction: row;
         gap: 1rem;
-        width: 65vw;
+        width: 40%;
     }
 
     li .content {
@@ -362,7 +362,7 @@ li .retornoVisual .dislike * {
     }
 
     li .content .descricao {
-        width: 25vw;
+        width: 10vw;
         font-size: 1rem;
         text-align: center;
     }
@@ -378,7 +378,7 @@ li .retornoVisual .dislike * {
     }
 
     li :is(.valores, .retornoVisual) {
-        width: 90%;
+        width: 70%;
         flex-direction: row;
     }
 
@@ -391,16 +391,8 @@ li .retornoVisual .dislike * {
         order: -1;
     }
 
-    li .retornoVisual .like {
-        width: 100%;
-    }
-
-    li .retornoVisual .dislike {
-        width: 100%;
-    }
-
-    li .retornoVisual .like *,
-    li .retornoVisual .dislike * {
+    li .retornoVisual :is(.like, .dislike),
+    li .retornoVisual :is(.like *, .dislike *) {
         width: 100%;
     }
 
@@ -412,5 +404,9 @@ li .retornoVisual .dislike * {
 
     .Saldo p {
         margin: 0;
+    }
+
+    li button {
+        width: 30%;
     }
 }

@@ -1,9 +1,7 @@
 ul {
     display: flex;
-    flex-direction: column;
+    flex-flow: row wrap;
+    justify-content: space-around;
     gap: 1rem;
     list-style: none;
-    padding-left: 0;
-    align-items: center;
-    justify-content: center;
 }
