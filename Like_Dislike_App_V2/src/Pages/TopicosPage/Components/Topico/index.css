@@ -1,0 +1,416 @@
+li {
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+li .content,
+li .resultado,
+.retornoVisual,
+.valores,
+.Saldo,
+#informacoes_extras {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.Saldo {
+    justify-content: center;
+    gap: .5rem;
+}
+
+span#informacoes_extras {
+    gap: 10rem;
+}
+
+li .content .descricao {
+    color: #aaa;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    text-align: justify;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+li .content #informacoes_extras * {
+    font-size: .9rem;
+    color: #aaa;
+}
+
+li .content #informacoes_extras {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+li .content {
+    flex-direction: column;
+}
+
+li .valores .qtd-likes {
+    color: #0d6efd;
+}
+
+li .valores .qtd-dislikes {
+    color: #dc3545;
+}
+
+li:hover {
+    border: 1px solid #0d6efd;
+}
+
+li .like {
+    color: #aaa;
+    cursor: pointer;
+}
+
+li .dislike {
+    color: #aaa;
+    cursor: pointer;
+}
+
+li .retornoVisual {
+    width: 10rem;
+}
+
+li .retornoVisual .like {
+    color: #0d6efd;
+}
+
+li .retornoVisual .dislike {
+    color: #dc3545;
+}
+
+li .retornoVisual {
+    /* grafico de progresso, onde o like é azul e o dislike é vermelho */
+    justify-content: center;
+    gap: 0;
+    width: 20rem;
+    height: 1.2rem;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    padding: 0;
+
+}
+
+li .retornoVisual .like {
+    height: 100%;
+    border-radius: 15px 0 0 15px;
+    background-color: #0d6efd;
+    animation: like 1s;
+}
+
+li .retornoVisual .dislike {
+    height: 100%;
+    border-radius: 0 15px 15px 0;
+    background-color: #dc3545;
+    animation: dislike 1s;
+}
+
+@keyframes like {
+    0% {
+        width: 0%;
+    }
+
+    100% {
+        width: 50%;
+    }
+}
+
+@keyframes dislike {
+    0% {
+        width: 0%;
+    }
+
+    100% {
+        width: 50%;
+    }
+}
+
+li .retornoVisual .like *,
+li .retornoVisual .dislike * {
+    color: #fff;
+    font-size: .8rem;
+    font-weight: bold;
+    padding: 0;
+    margin: 0;
+}
+
+@media (max-width: 450px) {
+    li {
+        flex-direction: column;
+        gap: 1rem;
+        width: 65vw;
+    }
+
+    li .content {
+        width: 100%;
+        margin: 0;
+    }
+
+    li .content .descricao {
+        width: 25vw;
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    li .content #informacoes_extras {
+        width: 80%;
+        gap: 1rem;
+    }
+
+    li .content #informacoes_extras * {
+        width: 80%;
+        font-size: .7rem;
+    }
+
+    li :is(.valores, .retornoVisual) {
+        width: 90%;
+        flex-direction: row;
+    }
+
+    li .valores :is(.qtd-likes, .qtd-dislikes) {
+        width: 100%;
+        font-size: .8rem;
+    }
+
+    li .retornoVisual {
+        order: -1;
+    }
+
+    li button {
+        flex-direction: row;
+    }
+
+    li .retornoVisual .like {
+        width: 100%;
+    }
+
+    li .retornoVisual .dislike {
+        width: 100%;
+    }
+
+    li .retornoVisual .like *,
+    li .retornoVisual .dislike * {
+        width: 100%;
+    }
+
+    .Saldo {
+        margin-top: 1rem;
+        gap: .5rem;
+        flex-direction: row;
+    }
+
+    .Saldo p {
+        margin: 0;
+    }
+}
+
+@media (max-width: 750px) {
+
+    li {
+        flex-direction: column;
+        gap: 1rem;
+        width: 65vw;
+    }
+
+    li .content {
+        width: 100%;
+        margin: 0;
+    }
+
+    li .content .descricao {
+        width: 25vw;
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    li .content #informacoes_extras {
+        width: 80%;
+        gap: 1rem;
+    }
+
+    li .content #informacoes_extras * {
+        width: 80%;
+        font-size: .7rem;
+    }
+
+    li :is(.valores, .retornoVisual) {
+        width: 90%;
+        flex-direction: row;
+    }
+
+    li .valores :is(.qtd-likes, .qtd-dislikes) {
+        width: 100%;
+        font-size: .8rem;
+    }
+
+    li .retornoVisual {
+        order: -1;
+    }
+
+    li button {
+        flex-direction: row;
+    }
+
+    li .retornoVisual .like {
+        width: 100%;
+    }
+
+    li .retornoVisual .dislike {
+        width: 100%;
+    }
+
+    li .retornoVisual .like *,
+    li .retornoVisual .dislike * {
+        width: 100%;
+    }
+
+    .Saldo {
+        margin-top: 1rem;
+        gap: .5rem;
+        flex-direction: row;
+    }
+
+    .Saldo p {
+        margin: 0;
+    }
+}
+
+@media (max-width: 1000px) {
+
+    li {
+        flex-direction: column;
+        gap: 1rem;
+        width: 65vw;
+    }
+
+    li .content {
+        width: 100%;
+        margin: 0;
+    }
+
+    li .content .descricao {
+        width: 25vw;
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    li .content #informacoes_extras {
+        width: 80%;
+        gap: 1rem;
+    }
+
+    li .content #informacoes_extras * {
+        width: 80%;
+        font-size: .7rem;
+    }
+
+    li :is(.valores, .retornoVisual) {
+        width: 90%;
+        flex-direction: row;
+    }
+
+    li .valores :is(.qtd-likes, .qtd-dislikes) {
+        width: 100%;
+        font-size: .8rem;
+    }
+
+    li .retornoVisual {
+        order: -1;
+    }
+
+    li button {
+        flex-direction: row;
+    }
+
+    li .retornoVisual .like {
+        width: 100%;
+    }
+
+    li .retornoVisual .dislike {
+        width: 100%;
+    }
+
+    li .retornoVisual .like *,
+    li .retornoVisual .dislike * {
+        width: 100%;
+    }
+
+    .Saldo {
+        margin-top: 1rem;
+        gap: .5rem;
+        flex-direction: row;
+    }
+
+    .Saldo p {
+        margin: 0;
+    }
+}
+
+@media (min-width: 1000px) {
+    li {
+        flex-direction: row;
+        gap: 1rem;
+        width: 65vw;
+    }
+
+    li .content {
+        width: 100%;
+        margin: 0;
+    }
+
+    li .content .descricao {
+        width: 25vw;
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    li .content #informacoes_extras {
+        width: 80%;
+        gap: 1rem;
+    }
+
+    li .content #informacoes_extras * {
+        width: 80%;
+        font-size: .7rem;
+    }
+
+    li :is(.valores, .retornoVisual) {
+        width: 90%;
+        flex-direction: row;
+    }
+
+    li .valores :is(.qtd-likes, .qtd-dislikes) {
+        width: 100%;
+        font-size: .8rem;
+    }
+
+    li .retornoVisual {
+        order: -1;
+    }
+
+    li .retornoVisual .like {
+        width: 100%;
+    }
+
+    li .retornoVisual .dislike {
+        width: 100%;
+    }
+
+    li .retornoVisual .like *,
+    li .retornoVisual .dislike * {
+        width: 100%;
+    }
+
+    .Saldo {
+        margin-top: 1rem;
+        gap: .5rem;
+        flex-direction: row;
+    }
+
+    .Saldo p {
+        margin: 0;
+    }
+}
