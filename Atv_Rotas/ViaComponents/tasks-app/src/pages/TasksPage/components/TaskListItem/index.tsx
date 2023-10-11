@@ -16,12 +16,36 @@ export function TaskListItem({ task }: TaskListItemProps) {
 
   const dispatch: React.Dispatch<Action> = useTasksDispatch();
 
-  const onSave = (task: Task) => {
-    dispatch({ type: ActionType.ADDED, payload: { task } })
+  const onSave = async (task: Task) => {
+    await fetch(`http://localhost:3000/tasks/${task.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(task)
+    }).then(response => {
+      if (!response.ok) {
+        alert('Erro ao atualizar a tarefa!')
+        return
+      }
+      dispatch({ type: ActionType.UPDATED, payload: { task } })
+    })
+
   }
 
-  const onRemove = (task: Task) => {
-    dispatch({ type: ActionType.REMOVED, payload: { id: task.id } })
+  const onRemove = async (task: Task) => {
+    await fetch(`http://localhost:3000/tasks/${task.id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(response => {
+      if (!response.ok) {
+        alert('Erro ao remover a tarefa!')
+        return
+      }
+      dispatch({ type: ActionType.REMOVED, payload: { id: task.id } })
+    })
   }
 
   const handleRemove = () => { onRemove(task) }

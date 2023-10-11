@@ -22,11 +22,12 @@ export function LoginPage({ next = '/' }: LoginPagePros) {
     const username = usernameInputRef.current!.value
     const password = passwordInputRef.current!.value
 
-    if (username !== 'rogerio410' || password !== '123456') {
-      alert('Usuário e/ou senha incorretos!')
+    if (!username || !password) {
+      alert('Preencha os campos corretamente!')
+      return
     }
 
-    signin({ username })
+    signin({ username, password })
   }
 
   return (

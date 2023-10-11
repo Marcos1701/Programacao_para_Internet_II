@@ -2,6 +2,7 @@ import React, { createContext, useContext, useMemo, useState } from "react";
 
 type User = {
   username: string
+  password?: string
 }
 
 interface AuthContextType {
