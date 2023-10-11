@@ -20,7 +20,7 @@ interface AuthProviderProps {
   children: React.ReactNode
 }
 
-// AuthProvider encapsula o AuthContextProvider
+// AuthProvider encapsula o AuthContextProvider e o AuthContext
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null)
 
