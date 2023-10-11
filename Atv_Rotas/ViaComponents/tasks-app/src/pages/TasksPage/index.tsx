@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import { Action, ActionType } from '../../reducers/task_reducer'
 import { useTasksDispatch } from '../../EncapsulatedContext'
-import { TaskList } from './components/TaskList'
 import { Link } from 'react-router-dom'
+import { TaskList } from './components/TaskList'
 
 export interface Task {
   id: string
@@ -23,8 +23,6 @@ export function TasksPage() {
         dispatch({ type: ActionType.LOADED, payload: { tasks: data } })
       })
   }, [])
-
-  console.log('Page renderizada!')
 
   return (
     <main>
