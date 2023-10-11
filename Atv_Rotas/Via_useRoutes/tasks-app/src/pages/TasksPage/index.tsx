@@ -3,6 +3,8 @@ import { Action, ActionType } from '../../reducers/task_reducer'
 import { useTasksDispatch } from '../../EncapsulatedContext'
 import { Link } from 'react-router-dom'
 import { TaskList } from './components/TaskList'
+import { Footer } from '../../components/Footer'
+import { Header } from '../../components/Header/index';
 
 export interface Task {
   id: string
@@ -25,9 +27,13 @@ export function TasksPage() {
   }, [])
 
   return (
-    <main>
-      <Link to="add-task">Nova Tarefa</Link>
-      <TaskList />
-    </main>
+    <>
+      <Header />
+      <main>
+        <Link to="add-task">Nova Tarefa</Link>
+        <TaskList />
+      </main>
+      <Footer />
+    </>
   )
 }

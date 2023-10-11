@@ -1,4 +1,4 @@
-import { Navigate, useRoutes } from "react-router-dom";
+import { Navigate, createBrowserRouter } from "react-router-dom";
 import { HomePage } from "./pages/HomePage";
 import { TasksPage } from "./pages/TasksPage";
 import { TaskForm } from "./pages/TasksPage/components/TaskForm";
@@ -11,14 +11,16 @@ import { AboutPage } from "./pages/AboutPage";
 
 export const AppRoutes = () => {
 
-    const element = useRoutes([
+    const element = createBrowserRouter([
         {
             path: '/',
-            element: <HomePage />
+            element: <HomePage />,
+            errorElement: <NotFoundPage />
         },
         {
             path: 'login',
-            element: <LoginPage />
+            element: <LoginPage />,
+            errorElement: <NotFoundPage />
         },
         {
             path: 'tasks',
@@ -45,15 +47,18 @@ export const AppRoutes = () => {
                     path: '*',
                     element: <Navigate to="/tasks" />
                 }
-            ]
+            ],
+            errorElement: <NotFoundPage />
         },
         {
             path: 'sobre',
-            element: <AboutPage />
+            element: <AboutPage />,
+            errorElement: <NotFoundPage />
         },
         {
             path: '*',
-            element: <NotFoundPage />
+            element: <NotFoundPage />,
+            errorElement: <NotFoundPage />
         }
     ])
     return element;

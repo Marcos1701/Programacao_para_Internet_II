@@ -3,6 +3,8 @@ import { useTasksDispatch } from '../../../../EncapsulatedContext';
 import { ActionType } from '../../../../reducers/task_reducer';
 import { ulid } from 'ulidx';
 import { Navigate } from 'react-router-dom';
+import { Footer } from '../../../../components/Footer';
+import { Header } from '../../../../components/Header';
 
 export function TaskForm() {
 
@@ -42,15 +44,19 @@ export function TaskForm() {
 
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" ref={descriptionInputRef} placeholder="Descrição da Task" />
-      <input type="submit" value="Adicionar Tarefa"
-        onClick={() => {
-          alert('Tarefa adicionada com sucesso!')
-          setAdded(true)
-        }} />
+    <>
+      <Header />
+      <form onSubmit={handleSubmit}>
+        <input type="text" ref={descriptionInputRef} placeholder="Descrição da Task" />
+        <input type="submit" value="Adicionar Tarefa"
+          onClick={() => {
+            alert('Tarefa adicionada com sucesso!')
+            setAdded(true)
+          }} />
 
-      {added && <Navigate to="/tasks" />}
-    </form>
+        {added && <Navigate to="/tasks" />}
+      </form>
+      <Footer />
+    </>
   )
 }
