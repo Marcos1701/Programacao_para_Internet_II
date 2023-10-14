@@ -1,0 +1,36 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+
+  & nav {
+
+    & ul {
+      display: flex;
+      gap: 1rem;
+
+      & li {
+        background: lightseagreen;
+        border-radius: 5px;
+        padding: 2px 5px;
+        min-width: 10rem;
+        list-style: none;
+
+        & a {
+          display: block;
+          color: white;
+
+          &.active {
+            border-bottom: 3px solid black;
+          }
+        }
+      }
+    }
+  }
+}

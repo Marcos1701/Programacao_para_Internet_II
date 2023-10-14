@@ -1,0 +1,65 @@
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 3rem 0;
+}
+
+/* input text e password*/
+input:is([type="text"], [type="password"]) {
+    width: 60%;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+}
+
+input[type="submit"] {
+    width: 30%;
+    padding: 0.8rem;
+    cursor: pointer;
+}
+
+p.msgError {
+    color: red;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+p.msgSuccess {
+    color: green;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+#sucess {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .1rem;
+}
+
+div.animatedBorder {
+    height: 0.3rem;
+    border-bottom: 1px solid green;
+    animation: border_animation 1.4s ease-in-out forwards;
+    margin: 0;
+}
+
+@keyframes border_animation {
+
+    0% {
+        width: 50%;
+    }
+
+    100% {
+        width: 0%;
+    }
+}
+
+input.invalidInput {
+    border: 1px solid red;
+}
